@@ -25,7 +25,7 @@ import sys
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from urllib.parse import quote_plus, urlparse
+from urllib.parse import urlparse
 
 try:
     import requests
@@ -58,6 +58,30 @@ BRAVE_QUERIES = [
 # Public Telegram channels with chess tournament news.
 # Add @handles here (without @). Empty for now - pending user input.
 TELEGRAM_CHANNELS: list[str] = []
+
+# Instagram post URLs - we fetch /embed/captioned/ for each (no auth needed).
+# Add /p/<id>/ or /reel/<id>/ URLs here. Auto-discovery from accounts is not
+# possible without paid scraper (Apify/Bright Data) or RSSHub bridge.
+INSTAGRAM_POST_URLS: list[str] = [
+    "https://www.instagram.com/p/DSwxMLhkTxt/",
+    "https://www.instagram.com/p/DUK1tDqE9EN/",
+    "https://www.instagram.com/p/DTcU3LjkUL9/",
+    "https://www.instagram.com/reel/DNFadUUx-XT/",
+    "https://www.instagram.com/reel/DXyEoNBgU-X/",
+    "https://www.instagram.com/p/DTO8qyQjyAN/",
+    "https://www.instagram.com/reel/DTuCdSwkgjR/",
+    "https://www.instagram.com/p/DUaIqfckS4F/",
+    "https://www.instagram.com/reel/DTC8tzjkk3-/",
+    "https://www.instagram.com/p/DLRji5MOBvK/",
+]
+
+# IG accounts of interest - auto-discovery TODO (RSSHub or paid scraper).
+INSTAGRAM_ACCOUNTS: list[str] = [
+    "infolombacatur",
+    "silomba.id",
+    "lombacaturterkini",
+    "infocatur.idn",
+]
 
 # Indonesian month names
 MONTHS_ID = {
@@ -211,7 +235,7 @@ def fetch_brave(api_key: str, queries: list[str]) -> list[dict]:
         try:
             r = requests.get(
                 BRAVE_ENDPOINT,
-                params={"q": q, "count": 20, "country": "ID", "search_lang": "id"},
+                params={"q": q, "count": 20, "country": "ID"},
                 headers={**HEADERS, "X-Subscription-Token": api_key, "Accept": "application/json"},
                 timeout=20,
             )
@@ -265,6 +289,60 @@ def fetch_telegram(channels: list[str]) -> list[dict]:
 
 
 # ─────────────────────────────────────────────────────────────────
+# Instagram public embed
+# ─────────────────────────────────────────────────────────────────
+
+_IG_SHORTCODE = re.compile(r"/(?:p|reel|reels)/([A-Za-z0-9_-]+)")
+
+
+def fetch_instagram(post_urls: list[str]) -> list[dict]:
+    leads: list[dict] = []
+    for url in post_urls:
+        m = _IG_SHORTCODE.search(url)
+        if not m:
+            continue
+        shortcode = m.group(1)
+        embed_url = f"https://www.instagram.com/p/{shortcode}/embed/captioned/"
+        # IG serves SPA to modern Chrome UAs; minimal UA gets static HTML w/ caption.
+        ig_headers = {"User-Agent": "Mozilla/5.0"}
+        try:
+            r = requests.get(embed_url, headers=ig_headers, timeout=20)
+            if r.status_code != 200:
+                print(f"  [instagram] {shortcode}: HTTP {r.status_code}")
+                continue
+            soup = BeautifulSoup(r.text, "lxml")
+            # IG embed structure: caption inside .Caption / .CaptionText / .CaptionContainer
+            caption_el = (
+                soup.select_one(".CaptionText")
+                or soup.select_one(".Caption")
+                or soup.select_one(".CaptionContainer")
+            )
+            caption = caption_el.get_text(" ", strip=True) if caption_el else ""
+            # Fallback: og:description meta tag often holds the caption
+            if not caption:
+                og = soup.find("meta", property="og:description")
+                if og and og.get("content"):
+                    caption = og["content"]
+            user_el = soup.select_one(".UsernameText") or soup.select_one(".CaptionUsername")
+            username = user_el.get_text(strip=True) if user_el else ""
+            img_el = soup.select_one(".EmbeddedMediaImage") or soup.select_one("img[src*='cdninstagram']")
+            image = img_el.get("src") if img_el else ""
+            if not caption:
+                continue
+            leads.append({
+                "query": f"instagram:@{username}" if username else "instagram",
+                "title": caption[:140],
+                "url": url,
+                "description": caption,
+                "image": image,
+            })
+            time.sleep(1.5)
+        except Exception as e:
+            print(f"  [instagram] error on {url}: {e}")
+    return leads
+
+
+# ─────────────────────────────────────────────────────────────────
 # Public API
 # ─────────────────────────────────────────────────────────────────
 
@@ -283,6 +361,12 @@ def collect_social_tournaments() -> tuple[list[dict], list[dict]]:
         raw.extend(fetch_telegram(TELEGRAM_CHANNELS))
     else:
         print("-> Skip Telegram (no channels configured)")
+
+    if INSTAGRAM_POST_URLS:
+        print(f"-> Instagram ({len(INSTAGRAM_POST_URLS)} posts)…")
+        raw.extend(fetch_instagram(INSTAGRAM_POST_URLS))
+    else:
+        print("-> Skip Instagram (no posts configured)")
 
     promoted: list[dict] = []
     seen_ids: set[str] = set()
