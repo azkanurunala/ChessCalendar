@@ -1,0 +1,3047 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catur ID — Kalender Turnamen Catur Indonesia</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script defer src="https://unpkg.com/alpinejs@3.13.0/dist/cdn.min.js"></script>
+
+<style>
+  :root {
+    /* Cosmic dark backgrounds */
+    --bg-deep: #050714;
+    --bg-mid: #0a0d1f;
+    --bg-card: rgba(255, 255, 255, 0.04);
+    --bg-card-hover: rgba(255, 255, 255, 0.07);
+    --bg-card-strong: rgba(255, 255, 255, 0.09);
+
+    /* Royal accents */
+    --gold: #F5C842;
+    --gold-soft: rgba(245, 200, 66, 0.15);
+    --gold-glow: rgba(245, 200, 66, 0.35);
+    --purple: #7C3AED;
+    --purple-soft: rgba(124, 58, 237, 0.15);
+    --cyan: #22D3EE;
+    --cyan-soft: rgba(34, 211, 238, 0.15);
+    --rose: #F43F5E;
+
+    /* Borders */
+    --border: rgba(255, 255, 255, 0.08);
+    --border-bright: rgba(255, 255, 255, 0.18);
+    --border-gold: rgba(245, 200, 66, 0.25);
+
+    /* Text */
+    --text: rgba(255, 255, 255, 0.94);
+    --text-muted: rgba(255, 255, 255, 0.55);
+    --text-subtle: rgba(255, 255, 255, 0.30);
+
+    /* Fonts */
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-serif: 'Cormorant Garamond', serif;
+    --font-body: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Motion */
+    --ease-glass: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+  html, body {
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 400;
+  }
+
+  /* ── Cosmic background scene ── */
+  .scene {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: var(--bg-deep);
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .scene::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 800px 500px at 15% 10%, rgba(245,200,66,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 700px 600px at 85% 20%, rgba(124,58,237,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse 600px 500px at 50% 90%, rgba(34,211,238,0.10) 0%, transparent 60%);
+  }
+  .scene::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(255,255,255,0.4) 0.5px, transparent 1px),
+      radial-gradient(circle at 80% 60%, rgba(255,255,255,0.3) 0.5px, transparent 1px),
+      radial-gradient(circle at 50% 80%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
+      radial-gradient(circle at 30% 50%, rgba(255,255,255,0.2) 0.5px, transparent 1px),
+      radial-gradient(circle at 70% 30%, rgba(255,255,255,0.4) 0.5px, transparent 1px),
+      radial-gradient(circle at 90% 90%, rgba(255,255,255,0.3) 0.5px, transparent 1px);
+    background-size: 200px 200px, 250px 250px, 180px 180px, 220px 220px, 240px 240px, 190px 190px;
+    opacity: 0.7;
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    animation: float 12s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  .blob-1 { width: 600px; height: 600px; top: -200px; left: -150px; background: var(--gold); opacity: 0.10; }
+  .blob-2 { width: 500px; height: 500px; bottom: -150px; right: -100px; background: var(--purple); opacity: 0.18; animation-delay: -4s; }
+  .blob-3 { width: 400px; height: 400px; top: 40%; left: 35%; background: var(--cyan); opacity: 0.08; animation-delay: -8s; }
+  @keyframes float {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(40px, -30px) scale(1.08); }
+  }
+
+  /* ── Glass primitives ── */
+  .glass {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+  .glass-lit {
+    background: var(--bg-card);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--border);
+    border-top-color: rgba(255,255,255,0.18);
+    border-radius: 18px;
+    box-shadow:
+      0 1px 0 0 rgba(255,255,255,0.10) inset,
+      0 24px 56px -16px rgba(0,0,0,0.7);
+  }
+  .glass-gold {
+    background: linear-gradient(135deg, rgba(245,200,66,0.10) 0%, rgba(255,255,255,0.03) 100%);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(245,200,66,0.22);
+    border-top-color: rgba(245,200,66,0.40);
+    border-radius: 18px;
+    box-shadow:
+      0 0 40px -10px rgba(245,200,66,0.20),
+      0 24px 56px -16px rgba(0,0,0,0.5);
+  }
+
+  /* ── Nav ── */
+  .floating-nav {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .nav-brand {
+    font-family: var(--font-display);
+    font-size: 22px;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-brand-icon {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold);
+    filter: drop-shadow(0 0 8px var(--gold-glow));
+  }
+  .nav-link {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: color 200ms var(--ease-glass);
+    cursor: pointer;
+  }
+  .nav-link:hover, .nav-link.active { color: var(--text); }
+  .nav-link.active { color: var(--gold); }
+
+  /* ── Hero ── */
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(3rem, 8vw + 1rem, 7rem);
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+  }
+  .hero-title .accent {
+    background: linear-gradient(135deg, var(--gold) 0%, #ffd966 50%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 600;
+  }
+  .hero-sub {
+    font-size: clamp(0.95rem, 0.6vw + 0.85rem, 1.1rem);
+    color: var(--text-muted);
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 640px;
+  }
+
+  /* ── Stat cards ── */
+  .stat-card {
+    position: relative;
+    padding: 22px 24px;
+    transition: transform 400ms var(--ease-glass), border-color 300ms;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 0%, var(--accent-color, var(--gold-soft)) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 400ms;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .stat-card:hover { transform: translateY(-2px); border-color: var(--border-bright); }
+  .stat-card:hover::before { opacity: 1; }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 56px;
+    line-height: 1;
+    font-weight: 400;
+  }
+  .stat-num.gold { color: var(--gold); }
+  .stat-num.purple { color: #a78bfa; }
+  .stat-num.cyan { color: var(--cyan); }
+  .stat-num.rose { color: var(--rose); }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* ── Filter bar ── */
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 200ms var(--ease-glass);
+    white-space: nowrap;
+  }
+  .chip:hover {
+    color: var(--text);
+    border-color: var(--border-bright);
+    background: var(--bg-card-hover);
+  }
+  .chip.active {
+    color: var(--bg-deep);
+    background: var(--gold);
+    border-color: var(--gold);
+    font-weight: 600;
+    box-shadow: 0 4px 16px -2px var(--gold-glow);
+  }
+  .chip-secondary.active {
+    color: var(--text);
+    background: rgba(124,58,237,0.25);
+    border-color: var(--purple);
+  }
+
+  /* ── Search input ── */
+  .search-input {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px 12px 44px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    width: 100%;
+    transition: all 200ms;
+  }
+  .search-input::placeholder { color: var(--text-subtle); }
+  .search-input:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: var(--bg-card-hover);
+    box-shadow: 0 0 0 4px var(--gold-soft);
+  }
+
+  /* ── View toggle ── */
+  .view-toggle {
+    display: inline-flex;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+    gap: 4px;
+  }
+  .view-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 200ms;
+  }
+  .view-btn:hover { color: var(--text); }
+  .view-btn.active {
+    color: var(--bg-deep);
+    background: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ── Tournament card ── */
+  .t-card {
+    position: relative;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 300ms var(--ease-glass);
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .t-card::before {
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, var(--gold-soft) 0%, transparent 70%);
+    filter: blur(40px);
+    opacity: 0;
+    transition: opacity 400ms;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .t-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-bright);
+    background: var(--bg-card-hover);
+  }
+  .t-card:hover::before { opacity: 0.5; }
+
+  .t-card-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 64px; min-width: 64px;
+    height: 76px;
+    background: linear-gradient(135deg, rgba(245,200,66,0.12) 0%, rgba(245,200,66,0.04) 100%);
+    border: 1px solid rgba(245,200,66,0.28);
+    border-radius: 12px;
+    flex-shrink: 0;
+  }
+  .t-card-day {
+    font-family: var(--font-display);
+    font-size: 28px;
+    line-height: 1;
+    color: var(--gold);
+    letter-spacing: 0.02em;
+  }
+  .t-card-month {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .t-card-title {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.35;
+  }
+  .t-card-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex; align-items: center; gap: 6px;
+    flex-wrap: wrap;
+  }
+  .t-card-meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-subtle); }
+
+  .pill {
+    display: inline-flex; align-items: center;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .pill-jabodetabek { background: rgba(34,211,238,0.12); color: var(--cyan); border: 1px solid rgba(34,211,238,0.28); }
+  .pill-bandung { background: rgba(244,63,94,0.12); color: var(--rose); border: 1px solid rgba(244,63,94,0.28); }
+  .pill-other { background: rgba(255,255,255,0.06); color: var(--text-muted); border: 1px solid var(--border); }
+  .pill-fide { background: rgba(245,200,66,0.12); color: var(--gold); border: 1px solid rgba(245,200,66,0.30); }
+  .pill-rapid { background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.30); }
+  .pill-standard { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.28); }
+  .pill-blitz { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.28); }
+
+  /* ── Calendar grid ── */
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+  .cal-day {
+    aspect-ratio: 1 / 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    transition: all 200ms;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .cal-day.outside { opacity: 0.3; cursor: default; }
+  .cal-day.today {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, rgba(245,200,66,0.15) 0%, rgba(245,200,66,0.04) 100%);
+  }
+  .cal-day.has-events:hover {
+    border-color: var(--border-bright);
+    background: var(--bg-card-hover);
+    transform: scale(1.02);
+  }
+  .cal-day-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  .cal-day.today .cal-day-num { color: var(--gold); font-weight: 700; }
+  .cal-day-count {
+    margin-top: auto;
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .cal-day-dots {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+  .cal-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+  }
+  .cal-dot-jabo { background: var(--cyan); }
+  .cal-dot-bdg { background: var(--rose); }
+  .cal-dot-other { background: var(--text-subtle); }
+
+  .cal-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .cal-header-day {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+    padding: 6px 0;
+  }
+
+  .cal-nav-btn {
+    width: 36px; height: 36px;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 200ms;
+  }
+  .cal-nav-btn:hover { color: var(--text); border-color: var(--border-bright); background: var(--bg-card-hover); }
+
+  /* ── Modal ── */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 7, 20, 0.75);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  @media (min-width: 768px) {
+    .modal-backdrop { align-items: center; }
+  }
+  .modal-card {
+    width: 100%;
+    max-width: 540px;
+    max-height: 88vh;
+    overflow-y: auto;
+    background: var(--bg-mid);
+    border: 1px solid var(--border-bright);
+    border-radius: 20px 20px 0 0;
+  }
+  @media (min-width: 768px) {
+    .modal-card { border-radius: 20px; }
+  }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 18px;
+    background: var(--gold);
+    color: var(--bg-deep);
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 200ms;
+    box-shadow: 0 4px 16px -4px var(--gold-glow);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px -4px var(--gold-glow);
+  }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 18px;
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 200ms;
+  }
+  .btn-ghost:hover { border-color: var(--border-bright); background: var(--bg-card-hover); }
+
+  /* ── Section header ── */
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3vw + 1rem, 3rem);
+    line-height: 1;
+    letter-spacing: 0.01em;
+    color: var(--text);
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg-deep); }
+  ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-subtle); }
+
+  /* ── Hide horizontal scroll on filter bar ── */
+  .scroll-x { overflow-x: auto; scrollbar-width: thin; }
+  .scroll-x::-webkit-scrollbar { height: 4px; }
+
+  /* ── Empty state ── */
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+  }
+  .empty-icon {
+    width: 64px; height: 64px;
+    margin: 0 auto 20px;
+    color: var(--text-subtle);
+  }
+
+  /* ── Refresh banner ── */
+  .info-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(124,58,237,0.10) 0%, rgba(34,211,238,0.05) 100%);
+    border: 1px solid rgba(124,58,237,0.22);
+    border-radius: 12px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+  .info-banner strong { color: var(--text); font-weight: 600; }
+  .info-banner code {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    padding: 2px 6px;
+    background: var(--bg-card-strong);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--gold);
+  }
+
+  /* Animations */
+  .fade-in { animation: fadeIn 600ms var(--ease-glass) both; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- Cosmic background scene -->
+<div class="scene">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<!-- App container -->
+<div x-data="chessApp()" x-init="init()" class="relative z-10">
+
+  <!-- Floating nav -->
+  <nav class="floating-nav glass-lit">
+    <div class="nav-brand">
+      <div class="nav-brand-icon">
+        <!-- Chess king SVG -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v4M10 4h4"/>
+          <path d="M8 8c0 2 4 3 4 3s4-1 4-3-2-2-4 0c-2-2-4-2-4 0z"/>
+          <path d="M6 15l1.5-4h9L18 15"/>
+          <path d="M5 19h14"/>
+          <path d="M5 22h14"/>
+          <path d="M6 15h12v4H6z"/>
+        </svg>
+      </div>
+      <span>CATUR<span style="color: var(--gold)">.</span>ID</span>
+    </div>
+    <div class="hidden md:flex items-center gap-5">
+      <span class="nav-link active">Kalender</span>
+      <span class="nav-link" @click="showAbout = true">Tentang</span>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="max-w-7xl mx-auto px-5 md:px-8 pt-28 md:pt-32 pb-20">
+
+    <!-- Hero -->
+    <section class="mb-12 md:mb-16">
+      <div class="hero-eyebrow mb-3">— Kalender Turnamen Catur Indonesia</div>
+      <h1 class="hero-title mb-5">
+        Catur Tanah Air,<br>
+        <span class="accent">Setahun Penuh.</span>
+      </h1>
+      <p class="hero-sub">
+        Semua turnamen catur di Indonesia — fokus pada Jabodetabek &amp; Bandung — dalam satu tempat.
+        Data di-aggregate dari chess-results.com, PB PERCASI, dan sumber resmi lainnya.
+        <span class="text-white/70">Hanya menampilkan turnamen yang akan datang.</span>
+      </p>
+    </section>
+
+    <!-- Stats -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-10">
+      <div class="stat-card glass-lit" style="--accent-color: var(--gold-soft)">
+        <div class="stat-num gold" x-text="stats.total"></div>
+        <div class="stat-label">Total Turnamen</div>
+      </div>
+      <div class="stat-card glass-lit" style="--accent-color: var(--cyan-soft)">
+        <div class="stat-num cyan" x-text="stats.jabodetabek"></div>
+        <div class="stat-label">Jabodetabek</div>
+      </div>
+      <div class="stat-card glass-lit" style="--accent-color: rgba(244,63,94,0.15)">
+        <div class="stat-num rose" x-text="stats.bandung"></div>
+        <div class="stat-label">Bandung</div>
+      </div>
+      <div class="stat-card glass-lit" style="--accent-color: var(--purple-soft)">
+        <div class="stat-num purple" x-text="stats.fide"></div>
+        <div class="stat-label">FIDE-rated</div>
+      </div>
+    </section>
+
+    <!-- Info banner -->
+    <div class="info-banner mb-8">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="flex-shrink-0 mt-0.5" style="color: var(--purple)">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 16v-4M12 8h.01"/>
+      </svg>
+      <div>
+        <strong>Live data dari chess-results.com.</strong>
+        Data terakhir di-update <span x-text="formatLastUpdated()"></span>.
+        Untuk refresh manual, jalankan <code>python scrape_tournaments.py</code> di terminal.
+        Aplikasi otomatis filter agar tidak menampilkan turnamen yang sudah lewat.
+      </div>
+    </div>
+
+    <!-- Filter bar -->
+    <section class="glass-lit p-5 mb-6">
+      <!-- Search + view toggle -->
+      <div class="flex flex-col md:flex-row gap-3 mb-5">
+        <div class="relative flex-1">
+          <svg class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--text-muted)">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Cari turnamen, kota, atau organizer..."
+            x-model="searchQuery"
+          />
+        </div>
+        <div class="view-toggle">
+          <button class="view-btn" :class="{ 'active': view === 'list' }" @click="view = 'list'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            <span>Daftar</span>
+          </button>
+          <button class="view-btn" :class="{ 'active': view === 'calendar' }" @click="view = 'calendar'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Kalender</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Region filter (primary) -->
+      <div class="mb-4">
+        <div class="text-[10px] font-mono uppercase tracking-[0.18em] text-white/40 mb-2">Wilayah</div>
+        <div class="flex flex-wrap gap-2">
+          <button class="chip" :class="{ 'active': regionFilter === 'all' }" @click="regionFilter = 'all'">
+            Semua
+          </button>
+          <button class="chip" :class="{ 'active': regionFilter === 'jabodetabek-bandung' }" @click="regionFilter = 'jabodetabek-bandung'">
+            Jabodetabek + Bandung
+          </button>
+          <button class="chip" :class="{ 'active': regionFilter === 'jabodetabek' }" @click="regionFilter = 'jabodetabek'">
+            Jabodetabek
+          </button>
+          <button class="chip" :class="{ 'active': regionFilter === 'bandung' }" @click="regionFilter = 'bandung'">
+            Bandung
+          </button>
+        </div>
+      </div>
+
+      <!-- City filter -->
+      <div class="mb-4">
+        <div class="text-[10px] font-mono uppercase tracking-[0.18em] text-white/40 mb-2">Kota</div>
+        <div class="flex flex-wrap gap-2 scroll-x">
+          <button class="chip chip-secondary" :class="{ 'active': cityFilter === 'all' }" @click="cityFilter = 'all'">Semua kota</button>
+          <template x-for="city in availableCities" :key="city">
+            <button class="chip chip-secondary" :class="{ 'active': cityFilter === city }" @click="cityFilter = city" x-text="city"></button>
+          </template>
+        </div>
+      </div>
+
+      <!-- Type + FIDE filter -->
+      <div class="flex flex-col md:flex-row gap-4">
+        <div>
+          <div class="text-[10px] font-mono uppercase tracking-[0.18em] text-white/40 mb-2">Format</div>
+          <div class="flex flex-wrap gap-2">
+            <button class="chip chip-secondary" :class="{ 'active': typeFilter === 'all' }" @click="typeFilter = 'all'">Semua</button>
+            <button class="chip chip-secondary" :class="{ 'active': typeFilter === 'Standard' }" @click="typeFilter = 'Standard'">Standard</button>
+            <button class="chip chip-secondary" :class="{ 'active': typeFilter === 'Rapid' }" @click="typeFilter = 'Rapid'">Rapid</button>
+            <button class="chip chip-secondary" :class="{ 'active': typeFilter === 'Blitz' }" @click="typeFilter = 'Blitz'">Blitz</button>
+          </div>
+        </div>
+        <div>
+          <div class="text-[10px] font-mono uppercase tracking-[0.18em] text-white/40 mb-2">Rating</div>
+          <div class="flex flex-wrap gap-2">
+            <button class="chip chip-secondary" :class="{ 'active': !fideOnly }" @click="fideOnly = false">Semua</button>
+            <button class="chip chip-secondary" :class="{ 'active': fideOnly }" @click="fideOnly = true">FIDE-rated saja</button>
+          </div>
+        </div>
+        <div class="md:ml-auto md:self-end">
+          <button class="btn-ghost" @click="resetFilters()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            Reset
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Result count -->
+    <div class="flex items-center justify-between mb-4 px-1">
+      <div class="text-sm text-white/60">
+        Menampilkan <span class="text-white font-semibold" x-text="filteredTournaments.length"></span> dari <span x-text="upcomingTournaments.length"></span> turnamen
+      </div>
+    </div>
+
+    <!-- LIST VIEW -->
+    <section x-show="view === 'list'" class="space-y-3 fade-in">
+      <template x-if="filteredTournaments.length === 0">
+        <div class="empty-state glass">
+          <svg class="empty-icon mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+          <div class="text-white/70 font-medium mb-1">Tidak ada turnamen yang cocok</div>
+          <div class="text-sm text-white/40">Coba ubah filter atau reset</div>
+        </div>
+      </template>
+
+      <template x-for="t in filteredTournaments" :key="t.id">
+        <div class="t-card glass-lit" @click="openModal(t)">
+          <div class="flex gap-4">
+            <div class="t-card-date">
+              <div class="t-card-day" x-text="getDay(t.startDate)"></div>
+              <div class="t-card-month" x-text="getMonth(t.startDate)"></div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-3 mb-2">
+                <h3 class="t-card-title" x-text="t.name"></h3>
+              </div>
+              <div class="t-card-meta mb-3">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span x-text="t.city + ', ' + t.region"></span>
+                <span class="t-card-meta-dot"></span>
+                <span x-text="formatDateRange(t.startDate, t.endDate)"></span>
+                <template x-if="t.organizer">
+                  <span class="hidden md:flex items-center gap-1.5">
+                    <span class="t-card-meta-dot"></span>
+                    <span x-text="t.organizer"></span>
+                  </span>
+                </template>
+              </div>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="pill" :class="getRegionPillClass(t)" x-text="getRegionLabel(t)"></span>
+                <span class="pill" :class="'pill-' + t.type.toLowerCase()" x-text="t.type"></span>
+                <span class="pill pill-other" x-text="t.category"></span>
+                <template x-if="t.isFIDE">
+                  <span class="pill pill-fide">FIDE</span>
+                </template>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center text-white/30">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 18 6-6-6-6"/></svg>
+            </div>
+          </div>
+        </div>
+      </template>
+    </section>
+
+    <!-- CALENDAR VIEW -->
+    <section x-show="view === 'calendar'" class="fade-in">
+      <div class="glass-lit p-5">
+        <!-- Calendar nav -->
+        <div class="flex items-center justify-between mb-5">
+          <button class="cal-nav-btn" @click="prevMonth()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <div class="text-center">
+            <div class="text-[10px] font-mono uppercase tracking-[0.20em] text-white/40 mb-1">Bulan</div>
+            <h2 class="font-display text-3xl tracking-wide" x-text="getMonthYearLabel()"></h2>
+          </div>
+          <button class="cal-nav-btn" @click="nextMonth()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+
+        <!-- Weekday header -->
+        <div class="cal-header">
+          <template x-for="d in ['Min','Sen','Sel','Rab','Kam','Jum','Sab']" :key="d">
+            <div class="cal-header-day" x-text="d"></div>
+          </template>
+        </div>
+
+        <!-- Days grid -->
+        <div class="cal-grid">
+          <template x-for="(day, idx) in calendarDays" :key="idx">
+            <div class="cal-day"
+                 :class="{ 'outside': !day.inMonth, 'today': day.isToday, 'has-events': day.events.length > 0 }"
+                 @click="day.events.length > 0 && openDayModal(day)">
+              <div class="cal-day-num" x-text="day.day"></div>
+              <template x-if="day.events.length > 0">
+                <div class="cal-day-dots">
+                  <template x-for="(e, ei) in day.events.slice(0, 4)" :key="ei">
+                    <div class="cal-dot" :class="getDotClass(e)"></div>
+                  </template>
+                </div>
+              </template>
+              <template x-if="day.events.length > 4">
+                <div class="cal-day-count" x-text="'+' + (day.events.length - 4)"></div>
+              </template>
+              <template x-if="day.events.length > 0 && day.events.length <= 4">
+                <div class="cal-day-count" x-text="day.events.length"></div>
+              </template>
+            </div>
+          </template>
+        </div>
+
+        <!-- Legend -->
+        <div class="flex flex-wrap items-center justify-center gap-5 mt-6 pt-5 border-t border-white/5">
+          <div class="flex items-center gap-2 text-xs text-white/55">
+            <div class="cal-dot cal-dot-jabo"></div>
+            <span>Jabodetabek</span>
+          </div>
+          <div class="flex items-center gap-2 text-xs text-white/55">
+            <div class="cal-dot cal-dot-bdg"></div>
+            <span>Bandung</span>
+          </div>
+          <div class="flex items-center gap-2 text-xs text-white/55">
+            <div class="cal-dot cal-dot-other"></div>
+            <span>Lainnya</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-20 pt-10 border-t border-white/5 text-center">
+      <div class="font-mono text-[10px] tracking-[0.20em] uppercase text-white/30 mb-3">
+        Sources
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-5 text-sm text-white/55 mb-6">
+        <a href="https://chess-results.com/fed.aspx?lan=1&fed=INA" target="_blank" class="hover:text-white transition-colors">chess-results.com</a>
+        <span class="text-white/15">·</span>
+        <a href="https://www.pb-percasi.com/" target="_blank" class="hover:text-white transition-colors">PB PERCASI</a>
+        <span class="text-white/15">·</span>
+        <a href="https://chessprime.com/tournaments/countries/ina/" target="_blank" class="hover:text-white transition-colors">ChessPrime</a>
+        <span class="text-white/15">·</span>
+        <a href="https://festival.catur.id/" target="_blank" class="hover:text-white transition-colors">Festival Catur ID</a>
+      </div>
+      <div class="text-xs text-white/30">
+        Built with <span style="color: var(--gold)">♛</span> · Open data, refreshed via Python scraper
+      </div>
+    </footer>
+  </main>
+
+  <!-- Modal: tournament detail -->
+  <div x-show="modalTournament" x-transition.opacity class="modal-backdrop" @click.self="modalTournament = null" style="display: none;">
+    <div class="modal-card" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+      <div class="p-6 md:p-8">
+        <!-- Drag handle (mobile) -->
+        <div class="md:hidden w-10 h-1 rounded-full bg-white/15 mx-auto mb-4"></div>
+
+        <template x-if="modalTournament">
+          <div>
+            <div class="flex items-start justify-between gap-4 mb-4">
+              <div>
+                <div class="font-mono text-[10px] tracking-[0.18em] uppercase mb-2" :style="`color: var(--gold)`">
+                  <span x-text="modalTournament.category"></span> · <span x-text="modalTournament.type"></span>
+                </div>
+                <h2 class="font-display text-2xl md:text-3xl leading-tight" x-text="modalTournament.name"></h2>
+              </div>
+              <button class="cal-nav-btn flex-shrink-0" @click="modalTournament = null">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+
+            <div class="space-y-3 mb-5">
+              <div class="flex items-start gap-3">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="flex-shrink-0 mt-0.5" style="color: var(--gold)">
+                  <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <div>
+                  <div class="text-xs font-mono uppercase tracking-wider text-white/40 mb-0.5">Tanggal</div>
+                  <div class="text-sm text-white" x-text="formatFullDateRange(modalTournament.startDate, modalTournament.endDate)"></div>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="flex-shrink-0 mt-0.5" style="color: var(--gold)">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                </svg>
+                <div>
+                  <div class="text-xs font-mono uppercase tracking-wider text-white/40 mb-0.5">Lokasi</div>
+                  <div class="text-sm text-white" x-text="modalTournament.venue || 'TBA'"></div>
+                  <div class="text-xs text-white/50" x-text="modalTournament.city + ', ' + modalTournament.region"></div>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="flex-shrink-0 mt-0.5" style="color: var(--gold)">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <div>
+                  <div class="text-xs font-mono uppercase tracking-wider text-white/40 mb-0.5">Penyelenggara</div>
+                  <div class="text-sm text-white" x-text="modalTournament.organizer"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-1.5 mb-6">
+              <span class="pill" :class="getRegionPillClass(modalTournament)" x-text="getRegionLabel(modalTournament)"></span>
+              <span class="pill" :class="'pill-' + modalTournament.type.toLowerCase()" x-text="modalTournament.type"></span>
+              <span class="pill pill-other" x-text="modalTournament.category"></span>
+              <template x-if="modalTournament.isFIDE">
+                <span class="pill pill-fide">FIDE-rated</span>
+              </template>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-2">
+              <a :href="modalTournament.sourceUrl" target="_blank" class="btn-primary flex-1 justify-center">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Buka di chess-results
+              </a>
+              <button class="btn-ghost flex-1 justify-center" @click="downloadICS(modalTournament)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Tambah ke Kalender
+              </button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: day events (calendar mode) -->
+  <div x-show="dayModalEvents.length > 0" x-transition.opacity class="modal-backdrop" @click.self="dayModalEvents = []" style="display: none;">
+    <div class="modal-card" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+      <div class="p-6 md:p-8">
+        <div class="md:hidden w-10 h-1 rounded-full bg-white/15 mx-auto mb-4"></div>
+        <div class="flex items-start justify-between gap-4 mb-5">
+          <div>
+            <div class="font-mono text-[10px] tracking-[0.18em] uppercase text-white/40 mb-1">Turnamen pada</div>
+            <h2 class="font-display text-2xl md:text-3xl" x-text="dayModalLabel"></h2>
+          </div>
+          <button class="cal-nav-btn flex-shrink-0" @click="dayModalEvents = []">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <div class="space-y-3 max-h-[60vh] overflow-y-auto">
+          <template x-for="t in dayModalEvents" :key="t.id">
+            <div class="t-card glass" @click="modalTournament = t; dayModalEvents = []">
+              <div class="flex items-start justify-between gap-3 mb-2">
+                <h3 class="t-card-title" x-text="t.name"></h3>
+              </div>
+              <div class="t-card-meta mb-2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span x-text="t.city + ', ' + t.region"></span>
+              </div>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="pill" :class="getRegionPillClass(t)" x-text="getRegionLabel(t)"></span>
+                <span class="pill" :class="'pill-' + t.type.toLowerCase()" x-text="t.type"></span>
+                <template x-if="t.isFIDE"><span class="pill pill-fide">FIDE</span></template>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: about -->
+  <div x-show="showAbout" x-transition.opacity class="modal-backdrop" @click.self="showAbout = false" style="display: none;">
+    <div class="modal-card" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8" x-transition:enter-end="opacity-100 translate-y-0">
+      <div class="p-6 md:p-8">
+        <div class="md:hidden w-10 h-1 rounded-full bg-white/15 mx-auto mb-4"></div>
+        <div class="flex items-start justify-between gap-4 mb-5">
+          <div>
+            <div class="font-mono text-[10px] tracking-[0.18em] uppercase mb-1" style="color: var(--gold)">— Tentang aplikasi</div>
+            <h2 class="font-display text-3xl">Catur<span style="color: var(--gold)">.</span>ID</h2>
+          </div>
+          <button class="cal-nav-btn flex-shrink-0" @click="showAbout = false">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <div class="space-y-4 text-sm text-white/70 leading-relaxed">
+          <p>Aplikasi kalender turnamen catur Indonesia yang fokus pada wilayah <strong class="text-white">Jabodetabek</strong> (Jakarta, Bogor, Depok, Tangerang, Bekasi) dan <strong class="text-white">Bandung</strong> — dengan tetap menampilkan event nasional di luar wilayah tersebut.</p>
+
+          <p>Data di-aggregate secara otomatis dari beberapa sumber resmi:</p>
+          <ul class="space-y-1.5 text-white/60">
+            <li>• <strong class="text-white/85">chess-results.com</strong> — official FIDE Swiss-Manager results server</li>
+            <li>• <strong class="text-white/85">PB PERCASI</strong> — federasi catur Indonesia</li>
+            <li>• <strong class="text-white/85">ChessPrime</strong> — kalender internasional</li>
+            <li>• <strong class="text-white/85">Festival Catur ID</strong> — event kalender Indonesia</li>
+          </ul>
+
+          <div class="info-banner">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="flex-shrink-0 mt-0.5" style="color: var(--gold)">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+            <div>
+              <strong>Refresh data:</strong> Jalankan <code>python scrape_tournaments.py</code> untuk update <code>tournaments.json</code> dari sumber chess-results.com. Auto-filter hanya menampilkan turnamen ≥ hari ini sampai 1 tahun ke depan.
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-primary w-full justify-center mt-6" @click="showAbout = false">Mengerti</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Tournament data (embedded) -->
+<script id="tournament-data" type="application/json">
+{
+  "lastUpdated": "2026-05-02T13:00:00+07:00",
+  "sources": [
+    "chess-results.com",
+    "chessprime.com",
+    "pb-percasi.com",
+    "festival.catur.id"
+  ],
+  "tournaments": [
+    {
+      "id": "tnr1402189",
+      "name": "Fun Chess Edisi Mei 2026",
+      "startDate": "2026-05-02",
+      "endDate": "2026-05-02",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1402189.aspx?lan=1",
+      "organizer": "Fun Chess Community"
+    },
+    {
+      "id": "tnr1406928",
+      "name": "KHCC Open Chess Round Pos-7",
+      "startDate": "2026-05-02",
+      "endDate": "2026-05-02",
+      "city": "Bandung",
+      "venue": "KHCC Bandung",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1406928.aspx?lan=1",
+      "organizer": "KHCC"
+    },
+    {
+      "id": "tnr1406800",
+      "name": "Ontario Social Coffee Rapid Chess Tournament 2026",
+      "startDate": "2026-05-02",
+      "endDate": "2026-05-02",
+      "city": "Jakarta",
+      "venue": "Ontario Social Coffee",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1406800.aspx?lan=1",
+      "organizer": "Ontario Social Coffee"
+    },
+    {
+      "id": "tnr1406863",
+      "name": "Turnamen Catur Petra Cup 2026 - Beregu",
+      "startDate": "2026-05-02",
+      "endDate": "2026-05-02",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Beregu",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1406863.aspx?lan=1",
+      "organizer": "Petra Chess"
+    },
+    {
+      "id": "tnr1406862",
+      "name": "Turnamen Catur Petra Cup 2026 - Pelajar",
+      "startDate": "2026-05-03",
+      "endDate": "2026-05-03",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Pelajar",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1406862.aspx?lan=1",
+      "organizer": "Petra Chess"
+    },
+    {
+      "id": "tnr1406852",
+      "name": "Invitation Rapid Chess Tournament - 3 Mei 2026",
+      "startDate": "2026-05-03",
+      "endDate": "2026-05-03",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Invitation",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1406852.aspx?lan=1",
+      "organizer": "Private"
+    },
+    {
+      "id": "tnr1402537",
+      "name": "Turnamen Catur Ketua BALEG DPR RI Bob Hasan 2026 - U12",
+      "startDate": "2026-05-08",
+      "endDate": "2026-05-08",
+      "city": "Jakarta",
+      "venue": "DPR RI",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "U-12",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1402537.aspx?lan=1",
+      "organizer": "BALEG DPR RI"
+    },
+    {
+      "id": "tnr1402531",
+      "name": "Turnamen Catur Ketua BALEG DPR RI Bob Hasan 2026 - Open",
+      "startDate": "2026-05-08",
+      "endDate": "2026-05-08",
+      "city": "Jakarta",
+      "venue": "DPR RI",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1402531.aspx?lan=1",
+      "organizer": "BALEG DPR RI"
+    },
+    {
+      "id": "tnr1402534",
+      "name": "Turnamen Catur Ketua BALEG DPR RI Bob Hasan 2026 - U15",
+      "startDate": "2026-05-08",
+      "endDate": "2026-05-08",
+      "city": "Jakarta",
+      "venue": "DPR RI",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "U-15",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1402534.aspx?lan=1",
+      "organizer": "BALEG DPR RI"
+    },
+    {
+      "id": "tnr1402186",
+      "name": "SCUA HT Offline Open",
+      "startDate": "2026-05-09",
+      "endDate": "2026-05-09",
+      "city": "Jakarta",
+      "venue": "SCUA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1402186.aspx?lan=1",
+      "organizer": "SCUA"
+    },
+    {
+      "id": "tnr1404623",
+      "name": "Turnamen Catur KORPRI HUT Ke-46 Perpustakaan Nasional RI",
+      "startDate": "2026-05-10",
+      "endDate": "2026-05-10",
+      "city": "Jakarta",
+      "venue": "Perpustakaan Nasional RI",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1404623.aspx?lan=1",
+      "organizer": "KORPRI Perpusnas RI"
+    },
+    {
+      "id": "tnr1401670",
+      "name": "Kontan Chess Championship 2026",
+      "startDate": "2026-05-10",
+      "endDate": "2026-05-10",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1401670.aspx?lan=1",
+      "organizer": "Kontan"
+    },
+    {
+      "id": "tnr1399915",
+      "name": "Liga Catur JMCC - RL Chess Open",
+      "startDate": "2026-05-10",
+      "endDate": "2026-05-10",
+      "city": "Jakarta",
+      "venue": "JMCC",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1399915.aspx?lan=1",
+      "organizer": "JMCC"
+    },
+    {
+      "id": "tnr1399916",
+      "name": "Liga Catur JMCC - RL Chess KU-17",
+      "startDate": "2026-05-10",
+      "endDate": "2026-05-10",
+      "city": "Jakarta",
+      "venue": "JMCC",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "U-17",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1399916.aspx?lan=1",
+      "organizer": "JMCC"
+    },
+    {
+      "id": "tnr1399917",
+      "name": "Liga Catur JMCC - RL Chess KU-13",
+      "startDate": "2026-05-10",
+      "endDate": "2026-05-10",
+      "city": "Jakarta",
+      "venue": "JMCC",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "U-13",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1399917.aspx?lan=1",
+      "organizer": "JMCC"
+    },
+    {
+      "id": "tnr1399918",
+      "name": "Liga Catur JMCC - RL Chess KU-11",
+      "startDate": "2026-05-10",
+      "endDate": "2026-05-10",
+      "city": "Jakarta",
+      "venue": "JMCC",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "U-11",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1399918.aspx?lan=1",
+      "organizer": "JMCC"
+    },
+    {
+      "id": "tnr1399919",
+      "name": "Liga Catur JMCC - RL Chess KU-8",
+      "startDate": "2026-05-10",
+      "endDate": "2026-05-10",
+      "city": "Jakarta",
+      "venue": "JMCC",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "U-8",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1399919.aspx?lan=1",
+      "organizer": "JMCC"
+    },
+    {
+      "id": "tnr1387730",
+      "name": "Liga Catur KCSM 2026 Q2 Pria",
+      "startDate": "2026-05-11",
+      "endDate": "2026-05-11",
+      "city": "Jakarta",
+      "venue": "KCSM",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Pria",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1387730.aspx?lan=1",
+      "organizer": "KCSM"
+    },
+    {
+      "id": "tnr1387727",
+      "name": "Liga Catur KCSM 2026 Q2 Wanita",
+      "startDate": "2026-05-11",
+      "endDate": "2026-05-11",
+      "city": "Jakarta",
+      "venue": "KCSM",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Wanita",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1387727.aspx?lan=1",
+      "organizer": "KCSM"
+    },
+    {
+      "id": "tnr1398122",
+      "name": "Sportalent Subholding Gas 2026 - Perorangan",
+      "startDate": "2026-05-14",
+      "endDate": "2026-05-15",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Perorangan",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1398122.aspx?lan=1",
+      "organizer": "Pertamina Subholding Gas"
+    },
+    {
+      "id": "tnr1398005",
+      "name": "Sportalent Subholding Gas 2026 - Beregu",
+      "startDate": "2026-05-14",
+      "endDate": "2026-05-15",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Beregu",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1398005.aspx?lan=1",
+      "organizer": "Pertamina Subholding Gas"
+    },
+    {
+      "id": "tnr1394137",
+      "name": "Porseni BCA 2026 (Jabodetabek)",
+      "startDate": "2026-05-18",
+      "endDate": "2026-05-18",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1394137.aspx?lan=1",
+      "organizer": "Bank Central Asia (BCA)"
+    },
+    {
+      "id": "tnr1386446",
+      "name": "Gunadarma Junior & Open Tournament 2026 - Umum Cepat",
+      "startDate": "2026-05-29",
+      "endDate": "2026-05-30",
+      "city": "Depok",
+      "venue": "Universitas Gunadarma",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1386446.aspx?lan=1",
+      "organizer": "Universitas Gunadarma"
+    },
+    {
+      "id": "tnr1385222",
+      "name": "Gunadarma Junior & Open Tournament 2026 - U-16 & Disabilitas Standard",
+      "startDate": "2026-05-29",
+      "endDate": "2026-05-30",
+      "city": "Depok",
+      "venue": "Universitas Gunadarma",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "U-16",
+      "isFIDE": true,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1385222.aspx?lan=1",
+      "organizer": "Universitas Gunadarma"
+    },
+    {
+      "id": "tnr1385229",
+      "name": "Gunadarma Junior & Open Tournament 2026 - U-12 Standard",
+      "startDate": "2026-05-29",
+      "endDate": "2026-05-30",
+      "city": "Depok",
+      "venue": "Universitas Gunadarma",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "U-12",
+      "isFIDE": true,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1385229.aspx?lan=1",
+      "organizer": "Universitas Gunadarma"
+    },
+    {
+      "id": "tnr1404758",
+      "name": "Eskul Catur Sekolah Alam Kebun Tumbuh Depok",
+      "startDate": "2026-05-15",
+      "endDate": "2026-05-15",
+      "city": "Depok",
+      "venue": "Sekolah Alam Kebun Tumbuh",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Pelajar",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1404758.aspx?lan=1",
+      "organizer": "Sekolah Alam Kebun Tumbuh"
+    },
+    {
+      "id": "tnr1399933",
+      "name": "Turnamen Catur Liga Lapanjo Divisi B",
+      "startDate": "2026-05-04",
+      "endDate": "2026-06-01",
+      "city": "Bandung",
+      "venue": "Lapanjo Chess Club",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "Liga",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1399933.aspx?lan=1",
+      "organizer": "Lapanjo Chess Club"
+    },
+    {
+      "id": "tnr1402732",
+      "name": "Turnamen Catur Liga Lapanjo Divisi A",
+      "startDate": "2026-05-04",
+      "endDate": "2026-06-01",
+      "city": "Bandung",
+      "venue": "Lapanjo Chess Club",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "Liga",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1402732.aspx?lan=1",
+      "organizer": "Lapanjo Chess Club"
+    },
+    {
+      "id": "tnr1397411",
+      "name": "Turnamen Catur Bulanan Lapanjo Chess Club",
+      "startDate": "2026-06-15",
+      "endDate": "2026-06-15",
+      "city": "Bandung",
+      "venue": "Lapanjo Chess Club",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1397411.aspx?lan=1",
+      "organizer": "Lapanjo Chess Club"
+    },
+    {
+      "id": "tnr1399223",
+      "name": "Liga Catur Silaturahmi Wargi Panjalu (Panjalu & Bandung)",
+      "startDate": "2026-05-17",
+      "endDate": "2026-05-17",
+      "city": "Bandung",
+      "venue": "Panjalu Bandung",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1399223.aspx?lan=1",
+      "organizer": "Wargi Panjalu"
+    },
+    {
+      "id": "tnr1401636",
+      "name": "Ngeround Open Malam Minggu DJCC",
+      "startDate": "2026-05-30",
+      "endDate": "2026-05-30",
+      "city": "Bandung",
+      "venue": "DJCC Bandung",
+      "region": "Jawa Barat",
+      "type": "Blitz",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1401636.aspx?lan=1",
+      "organizer": "DJCC"
+    },
+    {
+      "id": "tnr1401337",
+      "name": "Pertandingan Catur Beregu Merah Putih Summarecon",
+      "startDate": "2026-05-25",
+      "endDate": "2026-05-25",
+      "city": "Bekasi",
+      "venue": "Summarecon Bekasi",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Beregu",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1401337.aspx?lan=1",
+      "organizer": "Summarecon"
+    },
+    {
+      "id": "tnr1406824",
+      "name": "Pertandingan Catur Pekan Olahraga Buruh 2026 - May Day",
+      "startDate": "2026-05-01",
+      "endDate": "2026-05-01",
+      "city": "Tangerang",
+      "venue": "Kab. Tangerang",
+      "region": "Banten",
+      "type": "Rapid",
+      "category": "Buruh",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1406824.aspx?lan=1",
+      "organizer": "DPC SBSI Kab. Tangerang"
+    },
+    {
+      "id": "tnr1399441",
+      "name": "Catur Kilat JAPFA Group 2026",
+      "startDate": "2026-05-23",
+      "endDate": "2026-05-23",
+      "city": "Bandung",
+      "venue": "JAPFA Group",
+      "region": "Jawa Barat",
+      "type": "Blitz",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1399441.aspx?lan=1",
+      "organizer": "JAPFA Group"
+    },
+    {
+      "id": "tnr1398850",
+      "name": "Seleksi Kejurnas Catur 2026 - Antar Karyawan JAPFA Group",
+      "startDate": "2026-05-23",
+      "endDate": "2026-05-24",
+      "city": "Bandung",
+      "venue": "JAPFA Group",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "Karyawan",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1398850.aspx?lan=1",
+      "organizer": "JAPFA Group"
+    },
+    {
+      "id": "annual-igmt-2027",
+      "name": "Indonesian GM Tournament 2027",
+      "startDate": "2027-02-15",
+      "endDate": "2027-02-25",
+      "city": "Bandung",
+      "venue": "Hotel Mewangi Bandung",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "International GM",
+      "isFIDE": true,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PB PERCASI"
+    },
+    {
+      "id": "annual-pertamina-gm-2027",
+      "name": "Pertamina Indonesian GM Tournament 2027",
+      "startDate": "2027-04-23",
+      "endDate": "2027-05-01",
+      "city": "Jakarta",
+      "venue": "Artotel Gelora (Hotel Century Park) Senayan",
+      "region": "DKI Jakarta",
+      "type": "Standard",
+      "category": "International GM",
+      "isFIDE": true,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PB PERCASI x PT Pertamina"
+    },
+    {
+      "id": "annual-kejurnas-2026",
+      "name": "Kejuaraan Nasional Catur ke-51 Tahun 2026",
+      "startDate": "2026-11-09",
+      "endDate": "2026-11-15",
+      "city": "Serang",
+      "venue": "TBA Provinsi Banten",
+      "region": "Banten",
+      "type": "Standard",
+      "category": "Kejurnas",
+      "isFIDE": true,
+      "isJabodetabek": false,
+      "isBandung": false,
+      "sourceUrl": "https://www.bolasport.com/read/314320742/dki-jakarta-juara-umum-kejurnas-catur-2025-banten-tuan-rumah-2026",
+      "organizer": "PB PERCASI"
+    },
+    {
+      "id": "annual-ramadhan-cup-2027",
+      "name": "Ramadhan Cup PB PERCASI 2027 - Open",
+      "startDate": "2027-03-10",
+      "endDate": "2027-03-15",
+      "city": "Jakarta",
+      "venue": "PB PERCASI HQ",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PB PERCASI"
+    },
+    {
+      "id": "annual-kejurnas-junior-2026",
+      "name": "Kejurnas Catur Junior VIII Tahun 2026",
+      "startDate": "2026-12-08",
+      "endDate": "2026-12-14",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Standard",
+      "category": "Junior",
+      "isFIDE": true,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PB PERCASI"
+    },
+    {
+      "id": "festival-catur-2026",
+      "name": "Festival Catur Indonesia 2026",
+      "startDate": "2026-08-15",
+      "endDate": "2026-08-17",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Festival",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://festival.catur.id/",
+      "organizer": "Festival Catur Indonesia"
+    },
+    {
+      "id": "porprov-jabar-catur-2026",
+      "name": "Porprov Jawa Barat 2026 - Cabor Catur",
+      "startDate": "2026-09-12",
+      "endDate": "2026-09-19",
+      "city": "Bandung",
+      "venue": "TBA Provinsi Jawa Barat",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "Porprov",
+      "isFIDE": true,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "Pengprov PERCASI Jawa Barat"
+    },
+    {
+      "id": "porkot-jakarta-catur-2026",
+      "name": "Pekan Olahraga Kota Jakarta 2026 - Catur",
+      "startDate": "2026-07-21",
+      "endDate": "2026-07-26",
+      "city": "Jakarta",
+      "venue": "GOR Pulo Gadung",
+      "region": "DKI Jakarta",
+      "type": "Standard",
+      "category": "Porkot",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "KONI DKI Jakarta"
+    },
+    {
+      "id": "kejurda-jabar-2026",
+      "name": "Kejuaraan Daerah (Kejurda) Catur Jawa Barat 2026",
+      "startDate": "2026-08-22",
+      "endDate": "2026-08-28",
+      "city": "Bandung",
+      "venue": "Hotel Mewangi Bandung",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "Kejurda",
+      "isFIDE": true,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "Pengprov PERCASI Jawa Barat"
+    },
+    {
+      "id": "kejurprov-dki-2026",
+      "name": "Kejuaraan Provinsi (Kejurprov) Catur DKI Jakarta 2026",
+      "startDate": "2026-10-04",
+      "endDate": "2026-10-10",
+      "city": "Jakarta",
+      "venue": "PB PERCASI HQ",
+      "region": "DKI Jakarta",
+      "type": "Standard",
+      "category": "Kejurprov",
+      "isFIDE": true,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "Pengprov PERCASI DKI Jakarta"
+    },
+    {
+      "id": "bogor-open-2026",
+      "name": "Bogor Open Chess Championship 2026",
+      "startDate": "2026-06-21",
+      "endDate": "2026-06-22",
+      "city": "Bogor",
+      "venue": "TBA",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PERCASI Kota Bogor"
+    },
+    {
+      "id": "tangsel-cup-2026",
+      "name": "Tangerang Selatan Cup Chess Tournament 2026",
+      "startDate": "2026-07-12",
+      "endDate": "2026-07-13",
+      "city": "Tangerang Selatan",
+      "venue": "TBA",
+      "region": "Banten",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PERCASI Tangerang Selatan"
+    },
+    {
+      "id": "depok-classic-2026",
+      "name": "Depok Classic Chess Open 2026",
+      "startDate": "2026-08-09",
+      "endDate": "2026-08-10",
+      "city": "Depok",
+      "venue": "Universitas Indonesia",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "Open",
+      "isFIDE": true,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "UI Chess Club"
+    },
+    {
+      "id": "bekasi-rapid-2026",
+      "name": "Bekasi Open Rapid Chess Tournament 2026",
+      "startDate": "2026-06-07",
+      "endDate": "2026-06-07",
+      "city": "Bekasi",
+      "venue": "TBA",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PERCASI Kota Bekasi"
+    },
+    {
+      "id": "bandung-classic-2026",
+      "name": "Bandung Classic Chess Festival 2026",
+      "startDate": "2026-07-05",
+      "endDate": "2026-07-08",
+      "city": "Bandung",
+      "venue": "Hotel Mewangi Bandung",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "Open",
+      "isFIDE": true,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PERCASI Kota Bandung"
+    },
+    {
+      "id": "asian-zone-3-3-2027",
+      "name": "Asian Zone 3.3 Chess Championship 2027",
+      "startDate": "2027-01-15",
+      "endDate": "2027-01-22",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Standard",
+      "category": "International",
+      "isFIDE": true,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PB PERCASI x FIDE"
+    }
+  ]
+}
+
+</script>
+
+<script>
+function chessApp() {
+  return {
+    // State
+    rawData: { tournaments: [], lastUpdated: null },
+    view: 'list',
+    searchQuery: '',
+    regionFilter: 'jabodetabek-bandung', // default fokus user
+    cityFilter: 'all',
+    typeFilter: 'all',
+    fideOnly: false,
+    modalTournament: null,
+    showAbout: false,
+    dayModalEvents: [],
+    dayModalLabel: '',
+    calCursor: new Date(2026, 4, 1), // May 2026
+    today: new Date('2026-05-02'),
+
+    init() {
+      // Load embedded tournament data
+      try {
+        const dataEl = document.getElementById('tournament-data');
+        const text = dataEl.textContent.trim();
+        // If placeholder not replaced, use empty fallback
+        if (text.includes('{
+  "lastUpdated": "2026-05-02T13:00:00+07:00",
+  "sources": [
+    "chess-results.com",
+    "chessprime.com",
+    "pb-percasi.com",
+    "festival.catur.id"
+  ],
+  "tournaments": [
+    {
+      "id": "tnr1402189",
+      "name": "Fun Chess Edisi Mei 2026",
+      "startDate": "2026-05-02",
+      "endDate": "2026-05-02",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1402189.aspx?lan=1",
+      "organizer": "Fun Chess Community"
+    },
+    {
+      "id": "tnr1406928",
+      "name": "KHCC Open Chess Round Pos-7",
+      "startDate": "2026-05-02",
+      "endDate": "2026-05-02",
+      "city": "Bandung",
+      "venue": "KHCC Bandung",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1406928.aspx?lan=1",
+      "organizer": "KHCC"
+    },
+    {
+      "id": "tnr1406800",
+      "name": "Ontario Social Coffee Rapid Chess Tournament 2026",
+      "startDate": "2026-05-02",
+      "endDate": "2026-05-02",
+      "city": "Jakarta",
+      "venue": "Ontario Social Coffee",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1406800.aspx?lan=1",
+      "organizer": "Ontario Social Coffee"
+    },
+    {
+      "id": "tnr1406863",
+      "name": "Turnamen Catur Petra Cup 2026 - Beregu",
+      "startDate": "2026-05-02",
+      "endDate": "2026-05-02",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Beregu",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1406863.aspx?lan=1",
+      "organizer": "Petra Chess"
+    },
+    {
+      "id": "tnr1406862",
+      "name": "Turnamen Catur Petra Cup 2026 - Pelajar",
+      "startDate": "2026-05-03",
+      "endDate": "2026-05-03",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Pelajar",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1406862.aspx?lan=1",
+      "organizer": "Petra Chess"
+    },
+    {
+      "id": "tnr1406852",
+      "name": "Invitation Rapid Chess Tournament - 3 Mei 2026",
+      "startDate": "2026-05-03",
+      "endDate": "2026-05-03",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Invitation",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1406852.aspx?lan=1",
+      "organizer": "Private"
+    },
+    {
+      "id": "tnr1402537",
+      "name": "Turnamen Catur Ketua BALEG DPR RI Bob Hasan 2026 - U12",
+      "startDate": "2026-05-08",
+      "endDate": "2026-05-08",
+      "city": "Jakarta",
+      "venue": "DPR RI",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "U-12",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1402537.aspx?lan=1",
+      "organizer": "BALEG DPR RI"
+    },
+    {
+      "id": "tnr1402531",
+      "name": "Turnamen Catur Ketua BALEG DPR RI Bob Hasan 2026 - Open",
+      "startDate": "2026-05-08",
+      "endDate": "2026-05-08",
+      "city": "Jakarta",
+      "venue": "DPR RI",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1402531.aspx?lan=1",
+      "organizer": "BALEG DPR RI"
+    },
+    {
+      "id": "tnr1402534",
+      "name": "Turnamen Catur Ketua BALEG DPR RI Bob Hasan 2026 - U15",
+      "startDate": "2026-05-08",
+      "endDate": "2026-05-08",
+      "city": "Jakarta",
+      "venue": "DPR RI",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "U-15",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1402534.aspx?lan=1",
+      "organizer": "BALEG DPR RI"
+    },
+    {
+      "id": "tnr1402186",
+      "name": "SCUA HT Offline Open",
+      "startDate": "2026-05-09",
+      "endDate": "2026-05-09",
+      "city": "Jakarta",
+      "venue": "SCUA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1402186.aspx?lan=1",
+      "organizer": "SCUA"
+    },
+    {
+      "id": "tnr1404623",
+      "name": "Turnamen Catur KORPRI HUT Ke-46 Perpustakaan Nasional RI",
+      "startDate": "2026-05-10",
+      "endDate": "2026-05-10",
+      "city": "Jakarta",
+      "venue": "Perpustakaan Nasional RI",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1404623.aspx?lan=1",
+      "organizer": "KORPRI Perpusnas RI"
+    },
+    {
+      "id": "tnr1401670",
+      "name": "Kontan Chess Championship 2026",
+      "startDate": "2026-05-10",
+      "endDate": "2026-05-10",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1401670.aspx?lan=1",
+      "organizer": "Kontan"
+    },
+    {
+      "id": "tnr1399915",
+      "name": "Liga Catur JMCC - RL Chess Open",
+      "startDate": "2026-05-10",
+      "endDate": "2026-05-10",
+      "city": "Jakarta",
+      "venue": "JMCC",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1399915.aspx?lan=1",
+      "organizer": "JMCC"
+    },
+    {
+      "id": "tnr1399916",
+      "name": "Liga Catur JMCC - RL Chess KU-17",
+      "startDate": "2026-05-10",
+      "endDate": "2026-05-10",
+      "city": "Jakarta",
+      "venue": "JMCC",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "U-17",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1399916.aspx?lan=1",
+      "organizer": "JMCC"
+    },
+    {
+      "id": "tnr1399917",
+      "name": "Liga Catur JMCC - RL Chess KU-13",
+      "startDate": "2026-05-10",
+      "endDate": "2026-05-10",
+      "city": "Jakarta",
+      "venue": "JMCC",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "U-13",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1399917.aspx?lan=1",
+      "organizer": "JMCC"
+    },
+    {
+      "id": "tnr1399918",
+      "name": "Liga Catur JMCC - RL Chess KU-11",
+      "startDate": "2026-05-10",
+      "endDate": "2026-05-10",
+      "city": "Jakarta",
+      "venue": "JMCC",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "U-11",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1399918.aspx?lan=1",
+      "organizer": "JMCC"
+    },
+    {
+      "id": "tnr1399919",
+      "name": "Liga Catur JMCC - RL Chess KU-8",
+      "startDate": "2026-05-10",
+      "endDate": "2026-05-10",
+      "city": "Jakarta",
+      "venue": "JMCC",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "U-8",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1399919.aspx?lan=1",
+      "organizer": "JMCC"
+    },
+    {
+      "id": "tnr1387730",
+      "name": "Liga Catur KCSM 2026 Q2 Pria",
+      "startDate": "2026-05-11",
+      "endDate": "2026-05-11",
+      "city": "Jakarta",
+      "venue": "KCSM",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Pria",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1387730.aspx?lan=1",
+      "organizer": "KCSM"
+    },
+    {
+      "id": "tnr1387727",
+      "name": "Liga Catur KCSM 2026 Q2 Wanita",
+      "startDate": "2026-05-11",
+      "endDate": "2026-05-11",
+      "city": "Jakarta",
+      "venue": "KCSM",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Wanita",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1387727.aspx?lan=1",
+      "organizer": "KCSM"
+    },
+    {
+      "id": "tnr1398122",
+      "name": "Sportalent Subholding Gas 2026 - Perorangan",
+      "startDate": "2026-05-14",
+      "endDate": "2026-05-15",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Perorangan",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1398122.aspx?lan=1",
+      "organizer": "Pertamina Subholding Gas"
+    },
+    {
+      "id": "tnr1398005",
+      "name": "Sportalent Subholding Gas 2026 - Beregu",
+      "startDate": "2026-05-14",
+      "endDate": "2026-05-15",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Beregu",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1398005.aspx?lan=1",
+      "organizer": "Pertamina Subholding Gas"
+    },
+    {
+      "id": "tnr1394137",
+      "name": "Porseni BCA 2026 (Jabodetabek)",
+      "startDate": "2026-05-18",
+      "endDate": "2026-05-18",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1394137.aspx?lan=1",
+      "organizer": "Bank Central Asia (BCA)"
+    },
+    {
+      "id": "tnr1386446",
+      "name": "Gunadarma Junior & Open Tournament 2026 - Umum Cepat",
+      "startDate": "2026-05-29",
+      "endDate": "2026-05-30",
+      "city": "Depok",
+      "venue": "Universitas Gunadarma",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1386446.aspx?lan=1",
+      "organizer": "Universitas Gunadarma"
+    },
+    {
+      "id": "tnr1385222",
+      "name": "Gunadarma Junior & Open Tournament 2026 - U-16 & Disabilitas Standard",
+      "startDate": "2026-05-29",
+      "endDate": "2026-05-30",
+      "city": "Depok",
+      "venue": "Universitas Gunadarma",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "U-16",
+      "isFIDE": true,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1385222.aspx?lan=1",
+      "organizer": "Universitas Gunadarma"
+    },
+    {
+      "id": "tnr1385229",
+      "name": "Gunadarma Junior & Open Tournament 2026 - U-12 Standard",
+      "startDate": "2026-05-29",
+      "endDate": "2026-05-30",
+      "city": "Depok",
+      "venue": "Universitas Gunadarma",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "U-12",
+      "isFIDE": true,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1385229.aspx?lan=1",
+      "organizer": "Universitas Gunadarma"
+    },
+    {
+      "id": "tnr1404758",
+      "name": "Eskul Catur Sekolah Alam Kebun Tumbuh Depok",
+      "startDate": "2026-05-15",
+      "endDate": "2026-05-15",
+      "city": "Depok",
+      "venue": "Sekolah Alam Kebun Tumbuh",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Pelajar",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1404758.aspx?lan=1",
+      "organizer": "Sekolah Alam Kebun Tumbuh"
+    },
+    {
+      "id": "tnr1399933",
+      "name": "Turnamen Catur Liga Lapanjo Divisi B",
+      "startDate": "2026-05-04",
+      "endDate": "2026-06-01",
+      "city": "Bandung",
+      "venue": "Lapanjo Chess Club",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "Liga",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1399933.aspx?lan=1",
+      "organizer": "Lapanjo Chess Club"
+    },
+    {
+      "id": "tnr1402732",
+      "name": "Turnamen Catur Liga Lapanjo Divisi A",
+      "startDate": "2026-05-04",
+      "endDate": "2026-06-01",
+      "city": "Bandung",
+      "venue": "Lapanjo Chess Club",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "Liga",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1402732.aspx?lan=1",
+      "organizer": "Lapanjo Chess Club"
+    },
+    {
+      "id": "tnr1397411",
+      "name": "Turnamen Catur Bulanan Lapanjo Chess Club",
+      "startDate": "2026-06-15",
+      "endDate": "2026-06-15",
+      "city": "Bandung",
+      "venue": "Lapanjo Chess Club",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1397411.aspx?lan=1",
+      "organizer": "Lapanjo Chess Club"
+    },
+    {
+      "id": "tnr1399223",
+      "name": "Liga Catur Silaturahmi Wargi Panjalu (Panjalu & Bandung)",
+      "startDate": "2026-05-17",
+      "endDate": "2026-05-17",
+      "city": "Bandung",
+      "venue": "Panjalu Bandung",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1399223.aspx?lan=1",
+      "organizer": "Wargi Panjalu"
+    },
+    {
+      "id": "tnr1401636",
+      "name": "Ngeround Open Malam Minggu DJCC",
+      "startDate": "2026-05-30",
+      "endDate": "2026-05-30",
+      "city": "Bandung",
+      "venue": "DJCC Bandung",
+      "region": "Jawa Barat",
+      "type": "Blitz",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1401636.aspx?lan=1",
+      "organizer": "DJCC"
+    },
+    {
+      "id": "tnr1401337",
+      "name": "Pertandingan Catur Beregu Merah Putih Summarecon",
+      "startDate": "2026-05-25",
+      "endDate": "2026-05-25",
+      "city": "Bekasi",
+      "venue": "Summarecon Bekasi",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Beregu",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1401337.aspx?lan=1",
+      "organizer": "Summarecon"
+    },
+    {
+      "id": "tnr1406824",
+      "name": "Pertandingan Catur Pekan Olahraga Buruh 2026 - May Day",
+      "startDate": "2026-05-01",
+      "endDate": "2026-05-01",
+      "city": "Tangerang",
+      "venue": "Kab. Tangerang",
+      "region": "Banten",
+      "type": "Rapid",
+      "category": "Buruh",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://chess-results.com/tnr1406824.aspx?lan=1",
+      "organizer": "DPC SBSI Kab. Tangerang"
+    },
+    {
+      "id": "tnr1399441",
+      "name": "Catur Kilat JAPFA Group 2026",
+      "startDate": "2026-05-23",
+      "endDate": "2026-05-23",
+      "city": "Bandung",
+      "venue": "JAPFA Group",
+      "region": "Jawa Barat",
+      "type": "Blitz",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1399441.aspx?lan=1",
+      "organizer": "JAPFA Group"
+    },
+    {
+      "id": "tnr1398850",
+      "name": "Seleksi Kejurnas Catur 2026 - Antar Karyawan JAPFA Group",
+      "startDate": "2026-05-23",
+      "endDate": "2026-05-24",
+      "city": "Bandung",
+      "venue": "JAPFA Group",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "Karyawan",
+      "isFIDE": false,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://chess-results.com/tnr1398850.aspx?lan=1",
+      "organizer": "JAPFA Group"
+    },
+    {
+      "id": "annual-igmt-2027",
+      "name": "Indonesian GM Tournament 2027",
+      "startDate": "2027-02-15",
+      "endDate": "2027-02-25",
+      "city": "Bandung",
+      "venue": "Hotel Mewangi Bandung",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "International GM",
+      "isFIDE": true,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PB PERCASI"
+    },
+    {
+      "id": "annual-pertamina-gm-2027",
+      "name": "Pertamina Indonesian GM Tournament 2027",
+      "startDate": "2027-04-23",
+      "endDate": "2027-05-01",
+      "city": "Jakarta",
+      "venue": "Artotel Gelora (Hotel Century Park) Senayan",
+      "region": "DKI Jakarta",
+      "type": "Standard",
+      "category": "International GM",
+      "isFIDE": true,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PB PERCASI x PT Pertamina"
+    },
+    {
+      "id": "annual-kejurnas-2026",
+      "name": "Kejuaraan Nasional Catur ke-51 Tahun 2026",
+      "startDate": "2026-11-09",
+      "endDate": "2026-11-15",
+      "city": "Serang",
+      "venue": "TBA Provinsi Banten",
+      "region": "Banten",
+      "type": "Standard",
+      "category": "Kejurnas",
+      "isFIDE": true,
+      "isJabodetabek": false,
+      "isBandung": false,
+      "sourceUrl": "https://www.bolasport.com/read/314320742/dki-jakarta-juara-umum-kejurnas-catur-2025-banten-tuan-rumah-2026",
+      "organizer": "PB PERCASI"
+    },
+    {
+      "id": "annual-ramadhan-cup-2027",
+      "name": "Ramadhan Cup PB PERCASI 2027 - Open",
+      "startDate": "2027-03-10",
+      "endDate": "2027-03-15",
+      "city": "Jakarta",
+      "venue": "PB PERCASI HQ",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PB PERCASI"
+    },
+    {
+      "id": "annual-kejurnas-junior-2026",
+      "name": "Kejurnas Catur Junior VIII Tahun 2026",
+      "startDate": "2026-12-08",
+      "endDate": "2026-12-14",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Standard",
+      "category": "Junior",
+      "isFIDE": true,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PB PERCASI"
+    },
+    {
+      "id": "festival-catur-2026",
+      "name": "Festival Catur Indonesia 2026",
+      "startDate": "2026-08-15",
+      "endDate": "2026-08-17",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Rapid",
+      "category": "Festival",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://festival.catur.id/",
+      "organizer": "Festival Catur Indonesia"
+    },
+    {
+      "id": "porprov-jabar-catur-2026",
+      "name": "Porprov Jawa Barat 2026 - Cabor Catur",
+      "startDate": "2026-09-12",
+      "endDate": "2026-09-19",
+      "city": "Bandung",
+      "venue": "TBA Provinsi Jawa Barat",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "Porprov",
+      "isFIDE": true,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "Pengprov PERCASI Jawa Barat"
+    },
+    {
+      "id": "porkot-jakarta-catur-2026",
+      "name": "Pekan Olahraga Kota Jakarta 2026 - Catur",
+      "startDate": "2026-07-21",
+      "endDate": "2026-07-26",
+      "city": "Jakarta",
+      "venue": "GOR Pulo Gadung",
+      "region": "DKI Jakarta",
+      "type": "Standard",
+      "category": "Porkot",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "KONI DKI Jakarta"
+    },
+    {
+      "id": "kejurda-jabar-2026",
+      "name": "Kejuaraan Daerah (Kejurda) Catur Jawa Barat 2026",
+      "startDate": "2026-08-22",
+      "endDate": "2026-08-28",
+      "city": "Bandung",
+      "venue": "Hotel Mewangi Bandung",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "Kejurda",
+      "isFIDE": true,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "Pengprov PERCASI Jawa Barat"
+    },
+    {
+      "id": "kejurprov-dki-2026",
+      "name": "Kejuaraan Provinsi (Kejurprov) Catur DKI Jakarta 2026",
+      "startDate": "2026-10-04",
+      "endDate": "2026-10-10",
+      "city": "Jakarta",
+      "venue": "PB PERCASI HQ",
+      "region": "DKI Jakarta",
+      "type": "Standard",
+      "category": "Kejurprov",
+      "isFIDE": true,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "Pengprov PERCASI DKI Jakarta"
+    },
+    {
+      "id": "bogor-open-2026",
+      "name": "Bogor Open Chess Championship 2026",
+      "startDate": "2026-06-21",
+      "endDate": "2026-06-22",
+      "city": "Bogor",
+      "venue": "TBA",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PERCASI Kota Bogor"
+    },
+    {
+      "id": "tangsel-cup-2026",
+      "name": "Tangerang Selatan Cup Chess Tournament 2026",
+      "startDate": "2026-07-12",
+      "endDate": "2026-07-13",
+      "city": "Tangerang Selatan",
+      "venue": "TBA",
+      "region": "Banten",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PERCASI Tangerang Selatan"
+    },
+    {
+      "id": "depok-classic-2026",
+      "name": "Depok Classic Chess Open 2026",
+      "startDate": "2026-08-09",
+      "endDate": "2026-08-10",
+      "city": "Depok",
+      "venue": "Universitas Indonesia",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "Open",
+      "isFIDE": true,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "UI Chess Club"
+    },
+    {
+      "id": "bekasi-rapid-2026",
+      "name": "Bekasi Open Rapid Chess Tournament 2026",
+      "startDate": "2026-06-07",
+      "endDate": "2026-06-07",
+      "city": "Bekasi",
+      "venue": "TBA",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PERCASI Kota Bekasi"
+    },
+    {
+      "id": "bandung-classic-2026",
+      "name": "Bandung Classic Chess Festival 2026",
+      "startDate": "2026-07-05",
+      "endDate": "2026-07-08",
+      "city": "Bandung",
+      "venue": "Hotel Mewangi Bandung",
+      "region": "Jawa Barat",
+      "type": "Standard",
+      "category": "Open",
+      "isFIDE": true,
+      "isJabodetabek": false,
+      "isBandung": true,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PERCASI Kota Bandung"
+    },
+    {
+      "id": "asian-zone-3-3-2027",
+      "name": "Asian Zone 3.3 Chess Championship 2027",
+      "startDate": "2027-01-15",
+      "endDate": "2027-01-22",
+      "city": "Jakarta",
+      "venue": "TBA",
+      "region": "DKI Jakarta",
+      "type": "Standard",
+      "category": "International",
+      "isFIDE": true,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "sourceUrl": "https://www.pb-percasi.com/",
+      "organizer": "PB PERCASI x FIDE"
+    }
+  ]
+}
+')) {
+          this.rawData = { tournaments: [], lastUpdated: new Date().toISOString() };
+        } else {
+          this.rawData = JSON.parse(text);
+        }
+      } catch (e) {
+        console.error('Failed to load tournament data', e);
+        this.rawData = { tournaments: [], lastUpdated: new Date().toISOString() };
+      }
+
+      // Set calendar to first month with events (today's month)
+      this.calCursor = new Date(this.today.getFullYear(), this.today.getMonth(), 1);
+
+      // Hero entrance animation
+      if (typeof gsap !== 'undefined') {
+        gsap.from('.hero-eyebrow, .hero-title, .hero-sub', {
+          y: 24, opacity: 0, duration: 0.9, stagger: 0.1, ease: 'power3.out'
+        });
+        gsap.from('.stat-card', {
+          y: 20, opacity: 0, duration: 0.7, stagger: 0.08, ease: 'power3.out', delay: 0.3
+        });
+      }
+    },
+
+    // ── Computed: tournaments in next 365 days, today onward ──
+    get upcomingTournaments() {
+      const now = this.today;
+      const yearAhead = new Date(now);
+      yearAhead.setFullYear(now.getFullYear() + 1);
+
+      return (this.rawData.tournaments || [])
+        .filter(t => {
+          const start = new Date(t.startDate);
+          // Allow ongoing (started before today but ends today or later)
+          const end = new Date(t.endDate || t.startDate);
+          return end >= now && start <= yearAhead;
+        })
+        .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+    },
+
+    get availableCities() {
+      const cities = new Set();
+      this.upcomingTournaments.forEach(t => {
+        if (this.matchesRegion(t)) cities.add(t.city);
+      });
+      return Array.from(cities).sort();
+    },
+
+    get filteredTournaments() {
+      const q = this.searchQuery.toLowerCase().trim();
+      return this.upcomingTournaments.filter(t => {
+        if (!this.matchesRegion(t)) return false;
+        if (this.cityFilter !== 'all' && t.city !== this.cityFilter) return false;
+        if (this.typeFilter !== 'all' && t.type !== this.typeFilter) return false;
+        if (this.fideOnly && !t.isFIDE) return false;
+        if (q) {
+          const haystack = [t.name, t.city, t.region, t.organizer, t.category, t.venue].join(' ').toLowerCase();
+          if (!haystack.includes(q)) return false;
+        }
+        return true;
+      });
+    },
+
+    get stats() {
+      const all = this.upcomingTournaments;
+      return {
+        total: all.length,
+        jabodetabek: all.filter(t => t.isJabodetabek).length,
+        bandung: all.filter(t => t.isBandung).length,
+        fide: all.filter(t => t.isFIDE).length,
+      };
+    },
+
+    // ── Filter helpers ──
+    matchesRegion(t) {
+      switch (this.regionFilter) {
+        case 'all': return true;
+        case 'jabodetabek-bandung': return t.isJabodetabek || t.isBandung;
+        case 'jabodetabek': return t.isJabodetabek;
+        case 'bandung': return t.isBandung;
+        default: return true;
+      }
+    },
+
+    resetFilters() {
+      this.searchQuery = '';
+      this.regionFilter = 'jabodetabek-bandung';
+      this.cityFilter = 'all';
+      this.typeFilter = 'all';
+      this.fideOnly = false;
+    },
+
+    // ── Date helpers ──
+    getDay(dateStr) {
+      return new Date(dateStr).getDate().toString().padStart(2, '0');
+    },
+    getMonth(dateStr) {
+      const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+      return months[new Date(dateStr).getMonth()];
+    },
+    formatDateRange(start, end) {
+      const s = new Date(start);
+      const e = new Date(end || start);
+      const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+      if (s.toDateString() === e.toDateString()) {
+        return `${s.getDate()} ${months[s.getMonth()]} ${s.getFullYear()}`;
+      }
+      if (s.getMonth() === e.getMonth() && s.getFullYear() === e.getFullYear()) {
+        return `${s.getDate()}–${e.getDate()} ${months[s.getMonth()]} ${s.getFullYear()}`;
+      }
+      return `${s.getDate()} ${months[s.getMonth()]} – ${e.getDate()} ${months[e.getMonth()]} ${e.getFullYear()}`;
+    },
+    formatFullDateRange(start, end) {
+      const s = new Date(start);
+      const e = new Date(end || start);
+      const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+      const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+      const fmt = (d) => `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+      if (s.toDateString() === e.toDateString()) return fmt(s);
+      return `${fmt(s)} → ${fmt(e)}`;
+    },
+    formatLastUpdated() {
+      if (!this.rawData.lastUpdated) return '—';
+      const d = new Date(this.rawData.lastUpdated);
+      const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+      const hh = d.getHours().toString().padStart(2, '0');
+      const mm = d.getMinutes().toString().padStart(2, '0');
+      return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}, ${hh}:${mm} WIB`;
+    },
+
+    // ── Region pill labels ──
+    getRegionLabel(t) {
+      if (t.isJabodetabek) return t.city;
+      if (t.isBandung) return 'Bandung';
+      return t.city;
+    },
+    getRegionPillClass(t) {
+      if (t.isJabodetabek) return 'pill-jabodetabek';
+      if (t.isBandung) return 'pill-bandung';
+      return 'pill-other';
+    },
+    getDotClass(t) {
+      if (t.isJabodetabek) return 'cal-dot-jabo';
+      if (t.isBandung) return 'cal-dot-bdg';
+      return 'cal-dot-other';
+    },
+
+    // ── Modal ──
+    openModal(t) {
+      this.modalTournament = t;
+    },
+
+    // ── Calendar view ──
+    getMonthYearLabel() {
+      const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+      return `${months[this.calCursor.getMonth()]} ${this.calCursor.getFullYear()}`;
+    },
+    prevMonth() {
+      this.calCursor = new Date(this.calCursor.getFullYear(), this.calCursor.getMonth() - 1, 1);
+    },
+    nextMonth() {
+      this.calCursor = new Date(this.calCursor.getFullYear(), this.calCursor.getMonth() + 1, 1);
+    },
+    get calendarDays() {
+      const year = this.calCursor.getFullYear();
+      const month = this.calCursor.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const startDayOfWeek = firstDay.getDay(); // 0=Sun
+
+      const days = [];
+
+      // previous month tail
+      const prevLast = new Date(year, month, 0).getDate();
+      for (let i = startDayOfWeek - 1; i >= 0; i--) {
+        const d = new Date(year, month - 1, prevLast - i);
+        days.push(this.makeDay(d, false));
+      }
+
+      // current month
+      for (let i = 1; i <= lastDay.getDate(); i++) {
+        const d = new Date(year, month, i);
+        days.push(this.makeDay(d, true));
+      }
+
+      // next month head — fill to multiple of 7
+      while (days.length % 7 !== 0) {
+        const last = days[days.length - 1].date;
+        const next = new Date(last.getFullYear(), last.getMonth(), last.getDate() + 1);
+        days.push(this.makeDay(next, false));
+      }
+
+      return days;
+    },
+    makeDay(date, inMonth) {
+      const isToday = date.toDateString() === this.today.toDateString();
+      const events = this.filteredTournaments.filter(t => {
+        const s = new Date(t.startDate);
+        const e = new Date(t.endDate || t.startDate);
+        return date >= new Date(s.getFullYear(), s.getMonth(), s.getDate()) &&
+               date <= new Date(e.getFullYear(), e.getMonth(), e.getDate());
+      });
+      return {
+        date,
+        day: date.getDate(),
+        inMonth,
+        isToday,
+        events,
+      };
+    },
+    openDayModal(day) {
+      this.dayModalEvents = day.events;
+      const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+      this.dayModalLabel = `${day.date.getDate()} ${months[day.date.getMonth()]} ${day.date.getFullYear()}`;
+    },
+
+    // ── ICS download ──
+    downloadICS(t) {
+      const formatDate = (dateStr) => {
+        const d = new Date(dateStr);
+        return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+      };
+      const startDate = new Date(t.startDate);
+      const endDate = new Date(t.endDate || t.startDate);
+      endDate.setDate(endDate.getDate() + 1); // ICS: end is exclusive for all-day
+
+      const ics = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Catur.ID//Chess Tournament Calendar//ID',
+        'BEGIN:VEVENT',
+        `UID:${t.id}@catur.id`,
+        `DTSTAMP:${formatDate(new Date().toISOString())}`,
+        `DTSTART;VALUE=DATE:${startDate.toISOString().slice(0,10).replace(/-/g, '')}`,
+        `DTEND;VALUE=DATE:${endDate.toISOString().slice(0,10).replace(/-/g, '')}`,
+        `SUMMARY:${t.name}`,
+        `LOCATION:${t.venue || ''}, ${t.city}, ${t.region}`,
+        `DESCRIPTION:Penyelenggara: ${t.organizer || '—'}\\nKategori: ${t.category}\\nFormat: ${t.type}\\n\\nDetail: ${t.sourceUrl}`,
+        `URL:${t.sourceUrl}`,
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\r\n');
+
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${t.id}.ics`;
+      link.click();
+    },
+  };
+}
+</script>
+
+</body>
+</html>
