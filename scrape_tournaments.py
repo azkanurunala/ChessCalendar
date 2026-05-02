@@ -497,6 +497,20 @@ def main():
     log(f"Added {len(annual)} annual recurring events", quiet=args.quiet)
     enriched.extend(annual)
 
+    # 3b. Social leads (Brave Search + Telegram) — best-effort, marked unverified
+    try:
+        from scrape_socials import collect_social_tournaments
+        promoted, _raw = collect_social_tournaments()
+        existing_ids = {t["id"] for t in enriched}
+        added = 0
+        for t in promoted:
+            if t["id"] not in existing_ids:
+                enriched.append(t)
+                added += 1
+        log(f"Added {added} unverified social leads", quiet=args.quiet)
+    except Exception as e:
+        log(f"Socials skipped: {e}", quiet=args.quiet, level="DEBUG")
+
     # 4. Optionally merge with existing
     if args.keep_existing and Path(args.output).exists():
         with open(args.output, "r", encoding="utf-8") as f:
@@ -520,6 +534,8 @@ def main():
         "sources": [
             "chess-results.com",
             "pb-percasi.com",
+            "brave-search",
+            "telegram",
         ],
         "tournaments": filtered,
     }
