@@ -360,15 +360,16 @@
     border-radius: 12px;
     flex-shrink: 0;
   }
-  .t-card-poster {
-    width: 76px;
-    height: 76px;
-    min-width: 76px;
-    object-fit: cover;
-    border-radius: 12px;
+  .t-card-hero {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 70vh;
+    object-fit: contain;
+    border-radius: 14px;
     border: 1px solid rgba(255,255,255,0.08);
-    flex-shrink: 0;
-    background: rgba(255,255,255,0.03);
+    margin-bottom: 16px;
+    background: rgba(0,0,0,0.25);
   }
   .t-card-day {
     font-family: var(--font-display);
@@ -812,14 +813,14 @@
       </template>
 
       <template x-for="t in filteredTournaments" :key="t.id">
-        <div class="t-card glass-lit" @click="openModal(t)">
+        <div class="t-card glass-lit" @click="openModal(t)" :class="{ 't-card--with-poster': !!t.image }">
+          <img x-show="!!t.image" :src="t.image" :alt="t.name" loading="lazy"
+               class="t-card-hero"/>
           <div class="flex gap-4">
             <div class="t-card-date">
               <div class="t-card-day" x-text="getDay(t.startDate)"></div>
               <div class="t-card-month" x-text="getMonth(t.startDate)"></div>
             </div>
-            <img x-show="!!t.image" :src="t.image" :alt="t.name" loading="lazy"
-                 class="t-card-poster"/>
             <div class="flex-1 min-w-0">
               <div class="flex items-start justify-between gap-3 mb-2">
                 <h3 class="t-card-title" x-text="t.name"></h3>
@@ -960,7 +961,7 @@
               </button>
             </div>
             <img x-show="!!modalTournament.image" :src="modalTournament.image" :alt="modalTournament.name" loading="lazy"
-                 class="w-full max-h-80 object-contain rounded-xl border border-white/10 mb-4 bg-white/[0.02]"/>
+                 class="block w-full h-auto rounded-xl border border-white/10 mb-4 bg-black/30"/>
 
             <div class="space-y-3 mb-5">
               <div class="flex items-start gap-3">
