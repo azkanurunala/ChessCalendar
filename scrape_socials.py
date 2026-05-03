@@ -189,20 +189,37 @@ def _is_chess_tournament(text: str) -> bool:
     return chess_kw and event_kw
 
 
-def _shape(name: str, url: str, source: str, text: str) -> dict | None:
+def _shape(name: str, url: str, source: str, text: str, image: str = "") -> dict | None:
     if not _is_chess_tournament(text):
         return None
+    is_ig = source.startswith("instagram")
     dates = _extract_date_range(text)
     city = _extract_city(text)
-    if not dates or not city:
-        return None
-    start, end = dates
     today = datetime.now(WIB).date()
     horizon = today + timedelta(days=365)
-    sd = datetime.strptime(start, "%Y-%m-%d").date()
-    if sd < today or sd > horizon:
+
+    if dates:
+        start, end = dates
+        sd = datetime.strptime(start, "%Y-%m-%d").date()
+        if sd < today or sd > horizon:
+            if not is_ig:
+                return None
+            # IG: out-of-window date is suspect, fall back to "soon"
+            start = today.strftime("%Y-%m-%d")
+            end = (today + timedelta(days=30)).strftime("%Y-%m-%d")
+    elif is_ig:
+        # IG: no date parsed — default to a 30-day window from today
+        start = today.strftime("%Y-%m-%d")
+        end = (today + timedelta(days=30)).strftime("%Y-%m-%d")
+    else:
         return None
-    city_name, region = city
+
+    if city:
+        city_name, region = city
+    elif is_ig:
+        city_name, region = "TBA", "Indonesia"
+    else:
+        return None
     cl = city_name.lower()
     return {
         "id": f"social-{abs(hash(url)) % 10**10}",
@@ -221,6 +238,7 @@ def _shape(name: str, url: str, source: str, text: str) -> dict | None:
         "sourceUrl": url,
         "unverified": True,
         "source": source,
+        "image": image or "",
     }
 
 
@@ -332,8 +350,11 @@ def fetch_instagram(post_urls: list[str]) -> list[dict]:
                     caption = og["content"]
             user_el = soup.select_one(".UsernameText") or soup.select_one(".CaptionUsername")
             username = user_el.get_text(strip=True) if user_el else ""
-            img_el = soup.select_one(".EmbeddedMediaImage") or soup.select_one("img[src*='cdninstagram']")
-            image = img_el.get("src") if img_el else ""
+            og_img = soup.find("meta", property="og:image")
+            image = og_img["content"] if og_img and og_img.get("content") else ""
+            if not image:
+                img_el = soup.select_one(".EmbeddedMediaImage") or soup.select_one("img[src*='cdninstagram']")
+                image = img_el.get("src") if img_el else ""
             if not caption:
                 continue
             leads.append({
@@ -378,7 +399,7 @@ def collect_social_tournaments() -> tuple[list[dict], list[dict]]:
     seen_ids: set[str] = set()
     for lead in raw:
         text = f"{lead.get('title','')} {lead.get('description','')}"
-        t = _shape(lead.get("title", ""), lead.get("url", ""), lead.get("query", ""), text)
+        t = _shape(lead.get("title", ""), lead.get("url", ""), lead.get("query", ""), text, lead.get("image", ""))
         if t and t["id"] not in seen_ids:
             promoted.append(t)
             seen_ids.add(t["id"])
@@ -394,6 +415,10 @@ def collect_social_tournaments() -> tuple[list[dict], list[dict]]:
 
 
 if __name__ == "__main__":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[attr-defined]
+    except Exception:
+        pass
     promoted, raw = collect_social_tournaments()
     print(f"\nPromoted ({len(promoted)}):")
     for t in promoted:
