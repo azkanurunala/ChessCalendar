@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-03T09:33:45.091465+07:00",
+  "lastUpdated": "2026-05-03T14:18:48.721914+07:00",
   "sources": [
     "chess-results.com",
     "pb-percasi.com",
@@ -25,8 +25,8 @@
       "isBandung": false
     },
     {
-      "id": "tnr1405392",
-      "name": "BTC event turnamen KU 15 Tahun 2026",
+      "id": "tnr1407523",
+      "name": "LIGA LIWET KCA EDISI  MEI 2026",
       "startDate": "2026-05-03",
       "endDate": "2026-05-03",
       "city": "Jawa Barat",
@@ -35,8 +35,8 @@
       "type": "Rapid",
       "category": "Open",
       "isFIDE": false,
-      "organizer": ", Link with tournament calendar Parameters Show tournament details , no flags Lists Starting rank , ",
-      "sourceUrl": "https://chess-results.com/tnr1405392.aspx?lan=1",
+      "organizer": "",
+      "sourceUrl": "https://chess-results.com/tnr1407523.aspx?lan=1",
       "isJabodetabek": false,
       "isBandung": false
     },
@@ -57,26 +57,23 @@
       "isBandung": false
     },
     {
-      "id": "social-3552370242",
-      "name": "Turnamen Catur Kebun Raya Bogor Kembali Hadir! 👋🏼",
+      "id": "tnr1405392",
+      "name": "BTC event turnamen KU 15 Tahun 2026",
       "startDate": "2026-05-03",
-      "endDate": "2026-06-02",
-      "city": "Bogor",
+      "endDate": "2026-05-03",
+      "city": "Jawa Barat",
       "venue": "TBA",
       "region": "Jawa Barat",
-      "type": "Standard",
+      "type": "Rapid",
       "category": "Open",
       "isFIDE": false,
-      "isJabodetabek": true,
-      "isBandung": false,
-      "organizer": "www.instagram.com",
-      "sourceUrl": "https://www.instagram.com/p/DSwxMLhkTxt/",
-      "unverified": true,
-      "source": "instagram",
-      "image": "posters/DSwxMLhkTxt.jpg"
+      "organizer": ", Link with tournament calendar Parameters Show tournament details , no flags Lists Starting rank , ",
+      "sourceUrl": "https://chess-results.com/tnr1405392.aspx?lan=1",
+      "isJabodetabek": false,
+      "isBandung": false
     },
     {
-      "id": "social-1660521319",
+      "id": "social-2603356185",
       "name": "Turnamen catur di Tangerang Non-master #catur #caturindonesia #maincatur #lombacatur #infolomba",
       "startDate": "2026-05-03",
       "endDate": "2026-06-02",
@@ -95,7 +92,7 @@
       "image": "posters/DUK1tDqE9EN.jpg"
     },
     {
-      "id": "social-2740475605",
+      "id": "social-4592743115",
       "name": "Turnamen catur",
       "startDate": "2026-05-03",
       "endDate": "2026-06-02",
@@ -114,7 +111,7 @@
       "image": ""
     },
     {
-      "id": "social-6831231384",
+      "id": "social-7288039618",
       "name": "Turnamen catur",
       "startDate": "2026-05-03",
       "endDate": "2026-06-02",
@@ -133,7 +130,7 @@
       "image": ""
     },
     {
-      "id": "social-6540149139",
+      "id": "social-4154579069",
       "name": "Turnamen catur",
       "startDate": "2026-05-03",
       "endDate": "2026-06-02",
@@ -152,7 +149,7 @@
       "image": ""
     },
     {
-      "id": "social-4607694870",
+      "id": "social-8247078589",
       "name": "Turnamen catur",
       "startDate": "2026-05-03",
       "endDate": "2026-06-02",
@@ -171,7 +168,7 @@
       "image": ""
     },
     {
-      "id": "social-656468506",
+      "id": "social-744378400",
       "name": "Turnamen catur",
       "startDate": "2026-05-03",
       "endDate": "2026-06-02",
@@ -190,7 +187,7 @@
       "image": "posters/DTuCdSwkgjR.jpg"
     },
     {
-      "id": "social-473852015",
+      "id": "social-490255150",
       "name": "Turnamen catur",
       "startDate": "2026-05-03",
       "endDate": "2026-06-02",
@@ -209,7 +206,7 @@
       "image": ""
     },
     {
-      "id": "social-8951126858",
+      "id": "social-9970836962",
       "name": "Hallo Teman #KebunRaya 👋🏼",
       "startDate": "2026-05-03",
       "endDate": "2026-06-02",
@@ -228,7 +225,7 @@
       "image": "posters/DTC8tzjkk3-.jpg"
     },
     {
-      "id": "social-6025397612",
+      "id": "social-9300656519",
       "name": "Turnamen catur",
       "startDate": "2026-05-03",
       "endDate": "2026-06-02",
@@ -247,7 +244,7 @@
       "image": "posters/DLRji5MOBvK.jpg"
     },
     {
-      "id": "social-7918117227",
+      "id": "social-1620449361",
       "name": "Turnamen catur",
       "startDate": "2026-05-03",
       "endDate": "2026-06-02",

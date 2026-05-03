@@ -241,14 +241,15 @@ def _shape(name: str, url: str, source: str, text: str, image: str = "") -> dict
     if dates:
         start, end = dates
         sd = datetime.strptime(start, "%Y-%m-%d").date()
-        if sd < today or sd > horizon:
-            if not is_ig:
-                return None
-            # IG: out-of-window date is suspect, fall back to "soon"
-            start = today.strftime("%Y-%m-%d")
-            end = (today + timedelta(days=30)).strftime("%Y-%m-%d")
+        if sd < today:
+            # Past event — drop it. Don't fake a "today" date for an event
+            # that already happened.
+            return None
+        if sd > horizon:
+            return None
     elif is_ig:
-        # IG: no date parsed — default to a 30-day window from today
+        # IG with no parseable date — keep the entry so the poster still
+        # surfaces, but mark it TBA-style with today as a placeholder.
         start = today.strftime("%Y-%m-%d")
         end = (today + timedelta(days=30)).strftime("%Y-%m-%d")
     else:
