@@ -37,6 +37,29 @@ except ImportError:
 WIB = timezone(timedelta(hours=7))
 ROOT = Path(__file__).parent
 LEADS_DIR = ROOT / "leads"
+POSTERS_DIR = ROOT / "posters"
+
+
+def _download_poster(url: str, shortcode: str) -> str:
+    """Download IG poster locally and return relative repo path. Empty string on failure."""
+    if not url:
+        return ""
+    POSTERS_DIR.mkdir(exist_ok=True)
+    out = POSTERS_DIR / f"{shortcode}.jpg"
+    if out.exists() and out.stat().st_size > 0:
+        return f"posters/{shortcode}.jpg"
+    try:
+        r = requests.get(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "image/*"}, timeout=20, stream=True)
+        if r.status_code != 200:
+            print(f"  [poster] {shortcode}: HTTP {r.status_code}")
+            return ""
+        with out.open("wb") as f:
+            for chunk in r.iter_content(8192):
+                f.write(chunk)
+        return f"posters/{shortcode}.jpg"
+    except Exception as e:
+        print(f"  [poster] {shortcode}: {e}")
+        return ""
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
@@ -351,10 +374,12 @@ def fetch_instagram(post_urls: list[str]) -> list[dict]:
             user_el = soup.select_one(".UsernameText") or soup.select_one(".CaptionUsername")
             username = user_el.get_text(strip=True) if user_el else ""
             og_img = soup.find("meta", property="og:image")
-            image = og_img["content"] if og_img and og_img.get("content") else ""
-            if not image:
+            remote_image = og_img["content"] if og_img and og_img.get("content") else ""
+            if not remote_image:
                 img_el = soup.select_one(".EmbeddedMediaImage") or soup.select_one("img[src*='cdninstagram']")
-                image = img_el.get("src") if img_el else ""
+                remote_image = img_el.get("src") if img_el else ""
+            # Download locally — IG CDN URLs expire and some hosts get hotlink-blocked.
+            image = _download_poster(remote_image, shortcode)
             if not caption:
                 continue
             leads.append({
