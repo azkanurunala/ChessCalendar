@@ -534,8 +534,9 @@ def main():
         "sources": [
             "chess-results.com",
             "pb-percasi.com",
-            "brave-search",
+            "duckduckgo",
             "telegram",
+            "instagram",
         ],
         "tournaments": filtered,
     }

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-scrape_socials.py - Pull tournament leads from Brave Search + Telegram channels.
+scrape_socials.py - Pull tournament leads from DuckDuckGo + Telegram + Instagram.
 
-Brave Search: requires BRAVE_API_KEY env var (free tier 2000 q/mo).
+DuckDuckGo: free, no API key. Uses `ddgs` (or legacy `duckduckgo_search`) library.
 Telegram: scrapes public t.me/s/<channel> preview pages, no auth.
 
 Output: list of tournament-shaped dicts merged into tournaments.json by
@@ -38,15 +38,14 @@ WIB = timezone(timedelta(hours=7))
 ROOT = Path(__file__).parent
 LEADS_DIR = ROOT / "leads"
 
-BRAVE_ENDPOINT = "https://api.search.brave.com/res/v1/web/search"
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
                   "(KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
     "Accept-Language": "id-ID,id;q=0.9,en;q=0.8",
 }
 
-# Queries - keep tight to fit free quota (2000/mo ÷ daily run = ~65/day budget)
-BRAVE_QUERIES = [
+# DuckDuckGo is unmetered but soft-rate-limits — keep query count modest.
+DDG_QUERIES = [
     '"turnamen catur" jakarta 2026',
     '"turnamen catur" bandung 2026',
     '"kejuaraan catur" indonesia 2026',
@@ -226,34 +225,42 @@ def _shape(name: str, url: str, source: str, text: str) -> dict | None:
 
 
 # ─────────────────────────────────────────────────────────────────
-# Brave Search
+# DuckDuckGo Search (free, no API key)
 # ─────────────────────────────────────────────────────────────────
 
-def fetch_brave(api_key: str, queries: list[str]) -> list[dict]:
+def _ddgs_client():
+    try:
+        from ddgs import DDGS  # current package name
+    except ImportError:
+        from duckduckgo_search import DDGS  # legacy fallback
+    return DDGS()
+
+
+def fetch_ddg(queries: list[str], per_query: int = 20) -> list[dict]:
     leads: list[dict] = []
+    try:
+        ddgs = _ddgs_client()
+    except ImportError:
+        print("  [ddg] missing dep — pip install ddgs")
+        return leads
     for q in queries:
         try:
-            r = requests.get(
-                BRAVE_ENDPOINT,
-                params={"q": q, "count": 20, "country": "ID"},
-                headers={**HEADERS, "X-Subscription-Token": api_key, "Accept": "application/json"},
-                timeout=20,
+            results = ddgs.text(
+                q,
+                region="id-id",
+                safesearch="moderate",
+                max_results=per_query,
             )
-            if r.status_code == 429:
-                print(f"  [brave] rate-limited on '{q}', stopping")
-                break
-            r.raise_for_status()
-            data = r.json()
-            for item in (data.get("web") or {}).get("results", []):
+            for item in results or []:
                 leads.append({
                     "query": q,
                     "title": item.get("title", ""),
-                    "url": item.get("url", ""),
-                    "description": item.get("description", ""),
+                    "url": item.get("href") or item.get("url", ""),
+                    "description": item.get("body") or item.get("description", ""),
                 })
-            time.sleep(1.1)  # be polite
+            time.sleep(1.5)  # DDG soft-rate-limits; keep polite
         except Exception as e:
-            print(f"  [brave] error on '{q}': {e}")
+            print(f"  [ddg] error on '{q}': {e}")
     return leads
 
 
@@ -349,12 +356,11 @@ def fetch_instagram(post_urls: list[str]) -> list[dict]:
 def collect_social_tournaments() -> tuple[list[dict], list[dict]]:
     """Returns (promoted_tournaments, raw_leads). Raw leads also dumped to leads/."""
     raw: list[dict] = []
-    api = os.environ.get("BRAVE_API_KEY")
-    if api:
-        print("-> Brave Search…")
-        raw.extend(fetch_brave(api, BRAVE_QUERIES))
+    if os.environ.get("SKIP_DDG") == "1":
+        print("-> Skip DuckDuckGo (SKIP_DDG=1)")
     else:
-        print("-> Skip Brave (no BRAVE_API_KEY)")
+        print("-> DuckDuckGo Search…")
+        raw.extend(fetch_ddg(DDG_QUERIES))
 
     if TELEGRAM_CHANNELS:
         print(f"-> Telegram ({len(TELEGRAM_CHANNELS)} channels)…")

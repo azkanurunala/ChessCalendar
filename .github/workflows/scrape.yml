@@ -31,21 +31,9 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install requests beautifulsoup4 lxml
-
-      - name: Verify Brave secret
-        env:
-          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
-        run: |
-          if [ -z "$BRAVE_API_KEY" ]; then
-            echo "::warning::BRAVE_API_KEY is empty — Brave Search will be skipped"
-          else
-            echo "BRAVE_API_KEY is set (length=${#BRAVE_API_KEY})"
-          fi
+          pip install requests beautifulsoup4 lxml ddgs
 
       - name: Run scraper (with details)
-        env:
-          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
         run: python scrape_tournaments.py --with-details
         # kalau scraper fail (misal chess-results.com down), workflow fail visible.
         # tournaments.json lama tetap aman karena belum commit.
