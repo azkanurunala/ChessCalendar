@@ -228,10 +228,12 @@ def _is_chess_tournament(text: str) -> bool:
     return chess_kw and event_kw
 
 
-def _shape(name: str, url: str, source: str, text: str, image: str = "") -> dict | None:
+def _shape(name: str, url: str, source: str, text: str, image: str = "", manual: bool = False) -> dict | None:
     is_ig = source.startswith("instagram")
-    # Curated IG accounts are pre-vetted as chess-related; web hits aren't.
-    if not is_ig and not _is_chess_tournament(text):
+    # Manual IG entries (explicit URLs added by curator) bypass keyword check —
+    # the curator already vetted them. Auto-discovered IG posts and web hits
+    # must mention chess+event keywords to be promoted.
+    if not manual and not _is_chess_tournament(text):
         return None
     dates = _extract_date_range(text)
     city = _extract_city(text)
@@ -247,12 +249,14 @@ def _shape(name: str, url: str, source: str, text: str, image: str = "") -> dict
             return None
         if sd > horizon:
             return None
-    elif is_ig:
-        # IG with no parseable date — keep the entry so the poster still
-        # surfaces, but mark it TBA-style with today as a placeholder.
+    elif is_ig and manual:
+        # Manual IG post with no parseable date — keep the entry so the
+        # poster still surfaces, mark TBA-style with today as placeholder.
         start = today.strftime("%Y-%m-%d")
         end = (today + timedelta(days=30)).strftime("%Y-%m-%d")
     else:
+        # Auto-discovered IG posts and DDG hits without dates are dropped:
+        # most are news/promo/recap posts, not tournament announcements.
         return None
 
     if city:
@@ -355,7 +359,63 @@ def fetch_telegram(channels: list[str]) -> list[dict]:
 
 
 # ─────────────────────────────────────────────────────────────────
-# Instagram public embed
+# Instagram public profile API (auto-discovery of recent posts)
+# ─────────────────────────────────────────────────────────────────
+
+_IG_WEB_APP_ID = "936619743392459"  # public web app id IG's own UI uses
+_IG_PROFILE_API = "https://i.instagram.com/api/v1/users/web_profile_info/"
+
+
+def fetch_instagram_account(username: str) -> list[dict]:
+    """Hit IG's public web_profile_info API and return up to 12 recent posts
+    as lead dicts. No auth required, but rate-limits if hit fast."""
+    leads: list[dict] = []
+    try:
+        r = requests.get(
+            _IG_PROFILE_API,
+            params={"username": username},
+            headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/121.0.0.0 Safari/537.36",
+                "X-IG-App-ID": _IG_WEB_APP_ID,
+                "Accept": "*/*",
+            },
+            timeout=20,
+        )
+        if r.status_code != 200:
+            print(f"  [ig:@{username}] HTTP {r.status_code}")
+            return leads
+        data = r.json().get("data", {}).get("user") or {}
+    except Exception as e:
+        print(f"  [ig:@{username}] {e}")
+        return leads
+
+    edges = (data.get("edge_owner_to_timeline_media") or {}).get("edges") or []
+    for edge in edges:
+        node = edge.get("node") or {}
+        shortcode = node.get("shortcode")
+        if not shortcode:
+            continue
+        is_reel = node.get("is_video") or node.get("product_type") == "clips"
+        post_url = f"https://www.instagram.com/{'reel' if is_reel else 'p'}/{shortcode}/"
+        cap_edges = (node.get("edge_media_to_caption") or {}).get("edges") or []
+        caption = cap_edges[0]["node"]["text"] if cap_edges else ""
+        display_url = node.get("display_url") or node.get("thumbnail_src") or ""
+        image = _download_poster(display_url, shortcode)
+        first_line = next((ln.strip() for ln in (caption or "").splitlines() if ln.strip()), "")
+        title = first_line[:140] if first_line else f"Turnamen catur (@{username})"
+        leads.append({
+            "query": f"instagram:@{username}",
+            "title": title,
+            "url": post_url,
+            "description": caption,
+            "image": image,
+            "manual": False,
+        })
+    return leads
+
+
+# ─────────────────────────────────────────────────────────────────
+# Instagram public embed (per-post URL fetcher — kept for explicit URLs)
 # ─────────────────────────────────────────────────────────────────
 
 _IG_SHORTCODE = re.compile(r"/(?:p|reel|reels)/([A-Za-z0-9_-]+)")
@@ -433,6 +493,7 @@ def fetch_instagram(post_urls: list[str]) -> list[dict]:
                 "url": url,
                 "description": caption,
                 "image": image,
+                "manual": True,
             })
             time.sleep(1.5)
         except Exception as e:
@@ -459,17 +520,23 @@ def collect_social_tournaments() -> tuple[list[dict], list[dict]]:
     else:
         print("-> Skip Telegram (no channels configured)")
 
+    if INSTAGRAM_ACCOUNTS:
+        print(f"-> Instagram accounts ({len(INSTAGRAM_ACCOUNTS)})…")
+        for acc in INSTAGRAM_ACCOUNTS:
+            acc_leads = fetch_instagram_account(acc)
+            print(f"   @{acc}: {len(acc_leads)} posts")
+            raw.extend(acc_leads)
+            time.sleep(2.0)  # be polite — IG rate-limits aggressively
+
     if INSTAGRAM_POST_URLS:
-        print(f"-> Instagram ({len(INSTAGRAM_POST_URLS)} posts)…")
+        print(f"-> Instagram (manual {len(INSTAGRAM_POST_URLS)} posts)…")
         raw.extend(fetch_instagram(INSTAGRAM_POST_URLS))
-    else:
-        print("-> Skip Instagram (no posts configured)")
 
     promoted: list[dict] = []
     seen_ids: set[str] = set()
     for lead in raw:
         text = f"{lead.get('title','')} {lead.get('description','')}"
-        t = _shape(lead.get("title", ""), lead.get("url", ""), lead.get("query", ""), text, lead.get("image", ""))
+        t = _shape(lead.get("title", ""), lead.get("url", ""), lead.get("query", ""), text, lead.get("image", ""), lead.get("manual", False))
         if t and t["id"] not in seen_ids:
             promoted.append(t)
             seen_ids.add(t["id"])
