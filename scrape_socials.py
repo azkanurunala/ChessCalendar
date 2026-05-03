@@ -81,9 +81,11 @@ DDG_QUERIES = [
 # Add @handles here (without @). Empty for now - pending user input.
 TELEGRAM_CHANNELS: list[str] = []
 
-# Instagram post URLs - we fetch /embed/captioned/ for each (no auth needed).
+# Instagram post URLs - we fetch /embed/ for each (no auth needed).
 # Add /p/<id>/ or /reel/<id>/ URLs here. Auto-discovery from accounts is not
-# possible without paid scraper (Apify/Bright Data) or RSSHub bridge.
+# feasible without a headless browser: IG profile pages are SPA-only and the
+# usual mirror sites (picuki/imginn/gramhir/rsshub) are now defunct or
+# behind Cloudflare. Curate post URLs by hand here.
 INSTAGRAM_POST_URLS: list[str] = [
     "https://www.instagram.com/p/DSwxMLhkTxt/",
     "https://www.instagram.com/p/DUK1tDqE9EN/",
@@ -95,14 +97,28 @@ INSTAGRAM_POST_URLS: list[str] = [
     "https://www.instagram.com/p/DUaIqfckS4F/",
     "https://www.instagram.com/reel/DTC8tzjkk3-/",
     "https://www.instagram.com/p/DLRji5MOBvK/",
+    "https://www.instagram.com/p/DUXqd6PESL1/",
 ]
 
-# IG accounts of interest - auto-discovery TODO (RSSHub or paid scraper).
+# IG accounts of interest. NOTE: we don't auto-discover post URLs from these
+# yet (see comment above). Treat this list as the curation target — when you
+# spot a tournament post on one of these accounts, add the post URL above.
 INSTAGRAM_ACCOUNTS: list[str] = [
     "infolombacatur",
-    "silomba.id",
-    "lombacaturterkini",
     "infocatur.idn",
+    "catur_polinema",
+    "kebunraya_id",
+    "percasi.ina",
+    "prfmnews",
+    "info.lomba.beasiswa",
+    "saganheritage_yogyakarta",
+    "chesscomid",
+    "lombacaturterkini",
+    "cempaka_mas",
+    "eventjogjaterkini",
+    "mpkindonesia",
+    "lombasma",
+    "silomba.id",
 ]
 
 # Indonesian month names
@@ -213,9 +229,10 @@ def _is_chess_tournament(text: str) -> bool:
 
 
 def _shape(name: str, url: str, source: str, text: str, image: str = "") -> dict | None:
-    if not _is_chess_tournament(text):
-        return None
     is_ig = source.startswith("instagram")
+    # Curated IG accounts are pre-vetted as chess-related; web hits aren't.
+    if not is_ig and not _is_chess_tournament(text):
+        return None
     dates = _extract_date_range(text)
     city = _extract_city(text)
     today = datetime.now(WIB).date()
@@ -342,6 +359,27 @@ def fetch_telegram(channels: list[str]) -> list[dict]:
 
 _IG_SHORTCODE = re.compile(r"/(?:p|reel|reels)/([A-Za-z0-9_-]+)")
 
+# IG embed inlines a JSON blob inside a JS string, so all `"` are
+# rendered as `\"` and `\` as `\\`. Match against that escaped form,
+# then unescape twice (JS string + JSON string) to recover the caption.
+_IG_CAPTION_RE = re.compile(
+    r'\\"edge_media_to_caption\\":\{\\"edges\\":\[\{\\"node\\":\{\\"text\\":\\"((?:\\\\.|[^\\])*?)\\"\}',
+    re.S,
+)
+_IG_USERNAME_RE = re.compile(r'\\"owner\\":\{[^}]{0,500}?\\"username\\":\\"([^\\"]+)\\"')
+_IG_DISPLAY_URL_RE = re.compile(r'\\"display_url\\":\\"((?:\\\\.|[^\\])+?)\\"')
+
+
+def _decode_ig_string(escaped: str) -> str:
+    """Unescape a string that was JS-escaped then JSON-escaped."""
+    # First pass: unescape JS-string escapes (\\ -> \, \" -> ", \/ -> /)
+    s = escaped.replace('\\\\', '\x00').replace('\\"', '"').replace('\\/', '/').replace('\x00', '\\')
+    # Second pass: decode JSON string escapes (\n, \uXXXX, etc.) by wrapping in quotes.
+    try:
+        return json.loads(f'"{s}"')
+    except Exception:
+        return s
+
 
 def fetch_instagram(post_urls: list[str]) -> list[dict]:
     leads: list[dict] = []
@@ -350,41 +388,47 @@ def fetch_instagram(post_urls: list[str]) -> list[dict]:
         if not m:
             continue
         shortcode = m.group(1)
-        embed_url = f"https://www.instagram.com/p/{shortcode}/embed/captioned/"
-        # IG serves SPA to modern Chrome UAs; minimal UA gets static HTML w/ caption.
+        # Non-captioned embed inlines the caption + owner + display_url as JSON.
+        embed_url = f"https://www.instagram.com/p/{shortcode}/embed/"
         ig_headers = {"User-Agent": "Mozilla/5.0"}
         try:
             r = requests.get(embed_url, headers=ig_headers, timeout=20)
             if r.status_code != 200:
                 print(f"  [instagram] {shortcode}: HTTP {r.status_code}")
                 continue
-            soup = BeautifulSoup(r.text, "lxml")
-            # IG embed structure: caption inside .Caption / .CaptionText / .CaptionContainer
-            caption_el = (
-                soup.select_one(".CaptionText")
-                or soup.select_one(".Caption")
-                or soup.select_one(".CaptionContainer")
-            )
-            caption = caption_el.get_text(" ", strip=True) if caption_el else ""
-            # Fallback: og:description meta tag often holds the caption
+            body = r.text
+
+            cap_m = _IG_CAPTION_RE.search(body)
+            caption = _decode_ig_string(cap_m.group(1)) if cap_m else ""
             if not caption:
+                # Last-ditch fallback: og:description (truncated but better than nothing)
+                soup = BeautifulSoup(body, "lxml")
                 og = soup.find("meta", property="og:description")
-                if og and og.get("content"):
-                    caption = og["content"]
-            user_el = soup.select_one(".UsernameText") or soup.select_one(".CaptionUsername")
-            username = user_el.get_text(strip=True) if user_el else ""
-            og_img = soup.find("meta", property="og:image")
-            remote_image = og_img["content"] if og_img and og_img.get("content") else ""
+                caption = og["content"] if og and og.get("content") else ""
+
+            user_m = _IG_USERNAME_RE.search(body)
+            username = user_m.group(1) if user_m else ""
+
+            disp_m = _IG_DISPLAY_URL_RE.search(body)
+            remote_image = _decode_ig_string(disp_m.group(1)) if disp_m else ""
             if not remote_image:
-                img_el = soup.select_one(".EmbeddedMediaImage") or soup.select_one("img[src*='cdninstagram']")
-                remote_image = img_el.get("src") if img_el else ""
-            # Download locally — IG CDN URLs expire and some hosts get hotlink-blocked.
+                soup = BeautifulSoup(body, "lxml")
+                og_img = soup.find("meta", property="og:image")
+                remote_image = og_img["content"] if og_img and og_img.get("content") else ""
             image = _download_poster(remote_image, shortcode)
-            if not caption:
-                continue
+
+            # Even when caption can't be parsed (some posts return SPA-only embeds),
+            # still emit the lead — the poster image alone is useful and the account
+            # was manually curated.
+            if caption:
+                first_line = next((ln.strip() for ln in caption.splitlines() if ln.strip()), caption[:140])
+                title = first_line[:140]
+            else:
+                title = f"Turnamen catur (@{username})" if username else "Turnamen catur"
+                caption = ""
             leads.append({
                 "query": f"instagram:@{username}" if username else "instagram",
-                "title": caption[:140],
+                "title": title,
                 "url": url,
                 "description": caption,
                 "image": image,
