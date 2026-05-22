@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-22T06:08:13.251177+07:00",
+  "lastUpdated": "2026-05-23T06:08:57.842398+07:00",
   "sources": [
     "chess-results.com",
     "pb-percasi.com",
@@ -9,10 +9,26 @@
   ],
   "tournaments": [
     {
-      "id": "social-7421582666",
+      "id": "tnr1422330",
+      "name": "LIGA CATUR INTERNAL KOMUNITAS CATUR KATAPANG JUARA PERIODE MEI 2026",
+      "startDate": "2026-05-23",
+      "endDate": "2026-05-23",
+      "city": "Jawa Barat",
+      "venue": "TBA",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "organizer": "",
+      "sourceUrl": "https://chess-results.com/tnr1422330.aspx?lan=1",
+      "isJabodetabek": false,
+      "isBandung": false
+    },
+    {
+      "id": "social-9503879575",
       "name": "Turnamen catur di Tangerang Non-master #catur #caturindonesia #maincatur #lombacatur #infolomba",
-      "startDate": "2026-05-22",
-      "endDate": "2026-06-21",
+      "startDate": "2026-05-23",
+      "endDate": "2026-06-22",
       "city": "Tangerang",
       "venue": "TBA",
       "region": "Banten",
@@ -28,10 +44,10 @@
       "image": "posters/DUK1tDqE9EN.jpg"
     },
     {
-      "id": "social-8892487616",
+      "id": "social-2849079677",
       "name": "Turnamen catur",
-      "startDate": "2026-05-22",
-      "endDate": "2026-06-21",
+      "startDate": "2026-05-23",
+      "endDate": "2026-06-22",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -47,10 +63,10 @@
       "image": ""
     },
     {
-      "id": "social-9391186725",
+      "id": "social-6395559012",
       "name": "Turnamen catur",
-      "startDate": "2026-05-22",
-      "endDate": "2026-06-21",
+      "startDate": "2026-05-23",
+      "endDate": "2026-06-22",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -66,10 +82,10 @@
       "image": ""
     },
     {
-      "id": "social-9488646849",
+      "id": "social-2688346373",
       "name": "Turnamen catur",
-      "startDate": "2026-05-22",
-      "endDate": "2026-06-21",
+      "startDate": "2026-05-23",
+      "endDate": "2026-06-22",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -85,10 +101,10 @@
       "image": ""
     },
     {
-      "id": "social-4766731780",
+      "id": "social-7894340684",
       "name": "Turnamen catur",
-      "startDate": "2026-05-22",
-      "endDate": "2026-06-21",
+      "startDate": "2026-05-23",
+      "endDate": "2026-06-22",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -104,10 +120,10 @@
       "image": ""
     },
     {
-      "id": "social-4940493986",
+      "id": "social-5932155512",
       "name": "Turnamen catur",
-      "startDate": "2026-05-22",
-      "endDate": "2026-06-21",
+      "startDate": "2026-05-23",
+      "endDate": "2026-06-22",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -123,10 +139,10 @@
       "image": "posters/DTuCdSwkgjR.jpg"
     },
     {
-      "id": "social-185009891",
+      "id": "social-9389359757",
       "name": "Turnamen catur",
-      "startDate": "2026-05-22",
-      "endDate": "2026-06-21",
+      "startDate": "2026-05-23",
+      "endDate": "2026-06-22",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -142,10 +158,10 @@
       "image": ""
     },
     {
-      "id": "social-122240402",
+      "id": "social-4248409538",
       "name": "Hallo Teman #KebunRaya 👋🏼",
-      "startDate": "2026-05-22",
-      "endDate": "2026-06-21",
+      "startDate": "2026-05-23",
+      "endDate": "2026-06-22",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -161,10 +177,10 @@
       "image": "posters/DTC8tzjkk3-.jpg"
     },
     {
-      "id": "social-3248669133",
+      "id": "social-4287485493",
       "name": "Turnamen catur",
-      "startDate": "2026-05-22",
-      "endDate": "2026-06-21",
+      "startDate": "2026-05-23",
+      "endDate": "2026-06-22",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -180,10 +196,10 @@
       "image": "posters/DLRji5MOBvK.jpg"
     },
     {
-      "id": "social-1043014277",
+      "id": "social-9446990136",
       "name": "Turnamen catur",
-      "startDate": "2026-05-22",
-      "endDate": "2026-06-21",
+      "startDate": "2026-05-23",
+      "endDate": "2026-06-22",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -196,25 +212,6 @@
       "sourceUrl": "https://www.instagram.com/p/DUXqd6PESL1/",
       "unverified": true,
       "source": "instagram",
-      "image": ""
-    },
-    {
-      "id": "social-5261631846",
-      "name": "TOURNAMENT CATUR BOGOR OPEN CUP II 2026 RAPID CHESS ...",
-      "startDate": "2026-05-23",
-      "endDate": "2026-05-24",
-      "city": "Bogor",
-      "venue": "TBA",
-      "region": "Jawa Barat",
-      "type": "Rapid",
-      "category": "Open",
-      "isFIDE": false,
-      "isJabodetabek": true,
-      "isBandung": false,
-      "organizer": "www.instagram.com",
-      "sourceUrl": "https://www.instagram.com/p/DXZh2OBEdIq/",
-      "unverified": true,
-      "source": "turnamen catur jabodetabek 2026",
       "image": ""
     },
     {
