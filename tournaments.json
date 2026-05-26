@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-26T06:11:53.751929+07:00",
+  "lastUpdated": "2026-05-27T06:14:40.882316+07:00",
   "sources": [
     "chess-results.com",
     "pb-percasi.com",
@@ -9,10 +9,10 @@
   ],
   "tournaments": [
     {
-      "id": "social-3141236217",
+      "id": "social-314584916",
       "name": "Turnamen catur di Tangerang Non-master #catur #caturindonesia #maincatur #lombacatur #infolomba",
-      "startDate": "2026-05-26",
-      "endDate": "2026-06-25",
+      "startDate": "2026-05-27",
+      "endDate": "2026-06-26",
       "city": "Tangerang",
       "venue": "TBA",
       "region": "Banten",
@@ -28,10 +28,10 @@
       "image": "posters/DUK1tDqE9EN.jpg"
     },
     {
-      "id": "social-41480223",
+      "id": "social-2958100341",
       "name": "Turnamen catur",
-      "startDate": "2026-05-26",
-      "endDate": "2026-06-25",
+      "startDate": "2026-05-27",
+      "endDate": "2026-06-26",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -47,10 +47,10 @@
       "image": ""
     },
     {
-      "id": "social-7086022458",
+      "id": "social-7741563470",
       "name": "Turnamen catur",
-      "startDate": "2026-05-26",
-      "endDate": "2026-06-25",
+      "startDate": "2026-05-27",
+      "endDate": "2026-06-26",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -66,10 +66,10 @@
       "image": ""
     },
     {
-      "id": "social-5020528739",
+      "id": "social-3114715160",
       "name": "Turnamen catur",
-      "startDate": "2026-05-26",
-      "endDate": "2026-06-25",
+      "startDate": "2026-05-27",
+      "endDate": "2026-06-26",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -85,10 +85,10 @@
       "image": ""
     },
     {
-      "id": "social-5887718682",
+      "id": "social-8654653451",
       "name": "Turnamen catur",
-      "startDate": "2026-05-26",
-      "endDate": "2026-06-25",
+      "startDate": "2026-05-27",
+      "endDate": "2026-06-26",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -104,10 +104,10 @@
       "image": ""
     },
     {
-      "id": "social-8699102472",
+      "id": "social-9405677319",
       "name": "Turnamen catur",
-      "startDate": "2026-05-26",
-      "endDate": "2026-06-25",
+      "startDate": "2026-05-27",
+      "endDate": "2026-06-26",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -123,10 +123,10 @@
       "image": "posters/DTuCdSwkgjR.jpg"
     },
     {
-      "id": "social-571282940",
+      "id": "social-9468633866",
       "name": "Turnamen catur",
-      "startDate": "2026-05-26",
-      "endDate": "2026-06-25",
+      "startDate": "2026-05-27",
+      "endDate": "2026-06-26",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -142,10 +142,10 @@
       "image": ""
     },
     {
-      "id": "social-5666997305",
+      "id": "social-6681887739",
       "name": "Hallo Teman #KebunRaya 👋🏼",
-      "startDate": "2026-05-26",
-      "endDate": "2026-06-25",
+      "startDate": "2026-05-27",
+      "endDate": "2026-06-26",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -161,10 +161,10 @@
       "image": "posters/DTC8tzjkk3-.jpg"
     },
     {
-      "id": "social-5433426994",
+      "id": "social-20533576",
       "name": "Turnamen catur",
-      "startDate": "2026-05-26",
-      "endDate": "2026-06-25",
+      "startDate": "2026-05-27",
+      "endDate": "2026-06-26",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -178,44 +178,6 @@
       "unverified": true,
       "source": "instagram",
       "image": "posters/DLRji5MOBvK.jpg"
-    },
-    {
-      "id": "social-8347765617",
-      "name": "Turnamen catur",
-      "startDate": "2026-05-26",
-      "endDate": "2026-06-25",
-      "city": "TBA",
-      "venue": "TBA",
-      "region": "Indonesia",
-      "type": "Standard",
-      "category": "Open",
-      "isFIDE": false,
-      "isJabodetabek": false,
-      "isBandung": false,
-      "organizer": "www.instagram.com",
-      "sourceUrl": "https://www.instagram.com/p/DUXqd6PESL1/",
-      "unverified": true,
-      "source": "instagram",
-      "image": ""
-    },
-    {
-      "id": "social-2669100092",
-      "name": "Wagub Banten Sambut Baik Kehadiran Sekolah Catur di Tangerang - MediaBanten.Com",
-      "startDate": "2026-10-01",
-      "endDate": "2026-10-28",
-      "city": "Tangerang",
-      "venue": "TBA",
-      "region": "Banten",
-      "type": "Standard",
-      "category": "Open",
-      "isFIDE": false,
-      "isJabodetabek": true,
-      "isBandung": false,
-      "organizer": "mediabanten.com",
-      "sourceUrl": "https://mediabanten.com/wagub-banten-sambut-baik-kehadiran-sekolah-catur-di-tangerang/",
-      "unverified": true,
-      "source": "\"turnamen catur\" bandung 2026",
-      "image": ""
     },
     {
       "id": "annual-kejurnas-2026",
