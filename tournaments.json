@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-30T06:19:14.675970+07:00",
+  "lastUpdated": "2026-05-31T06:04:55.316446+07:00",
   "sources": [
     "chess-results.com",
     "pb-percasi.com",
@@ -9,10 +9,26 @@
   ],
   "tournaments": [
     {
-      "id": "social-5201852412",
+      "id": "tnr1427996",
+      "name": "LIGA CATUR PERCASI  OPEN TURNAMEN CATUR PELAJAR BASUDEWA CHESS SE-KAB SUMEDANG 2026",
+      "startDate": "2026-05-31",
+      "endDate": "2026-05-31",
+      "city": "Sumedang",
+      "venue": "TBA",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Pelajar",
+      "isFIDE": false,
+      "organizer": "",
+      "sourceUrl": "https://chess-results.com/tnr1427996.aspx?lan=1",
+      "isJabodetabek": false,
+      "isBandung": false
+    },
+    {
+      "id": "social-9562203017",
       "name": "Turnamen catur di Tangerang Non-master #catur #caturindonesia #maincatur #lombacatur #infolomba",
-      "startDate": "2026-05-30",
-      "endDate": "2026-06-29",
+      "startDate": "2026-05-31",
+      "endDate": "2026-06-30",
       "city": "Tangerang",
       "venue": "TBA",
       "region": "Banten",
@@ -28,10 +44,10 @@
       "image": "posters/DUK1tDqE9EN.jpg"
     },
     {
-      "id": "social-4755426645",
+      "id": "social-3655252998",
       "name": "Turnamen catur",
-      "startDate": "2026-05-30",
-      "endDate": "2026-06-29",
+      "startDate": "2026-05-31",
+      "endDate": "2026-06-30",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -47,10 +63,10 @@
       "image": ""
     },
     {
-      "id": "social-5658843574",
+      "id": "social-3104106110",
       "name": "Turnamen catur",
-      "startDate": "2026-05-30",
-      "endDate": "2026-06-29",
+      "startDate": "2026-05-31",
+      "endDate": "2026-06-30",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -66,10 +82,10 @@
       "image": ""
     },
     {
-      "id": "social-5231363268",
+      "id": "social-9756230330",
       "name": "Turnamen catur",
-      "startDate": "2026-05-30",
-      "endDate": "2026-06-29",
+      "startDate": "2026-05-31",
+      "endDate": "2026-06-30",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -85,10 +101,10 @@
       "image": ""
     },
     {
-      "id": "social-1450226678",
+      "id": "social-4587745414",
       "name": "Turnamen catur",
-      "startDate": "2026-05-30",
-      "endDate": "2026-06-29",
+      "startDate": "2026-05-31",
+      "endDate": "2026-06-30",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -104,10 +120,10 @@
       "image": ""
     },
     {
-      "id": "social-8170603672",
+      "id": "social-7026571374",
       "name": "Turnamen catur",
-      "startDate": "2026-05-30",
-      "endDate": "2026-06-29",
+      "startDate": "2026-05-31",
+      "endDate": "2026-06-30",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -123,10 +139,10 @@
       "image": "posters/DTuCdSwkgjR.jpg"
     },
     {
-      "id": "social-2718325558",
+      "id": "social-2234135075",
       "name": "Turnamen catur",
-      "startDate": "2026-05-30",
-      "endDate": "2026-06-29",
+      "startDate": "2026-05-31",
+      "endDate": "2026-06-30",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -142,10 +158,10 @@
       "image": ""
     },
     {
-      "id": "social-2421863908",
+      "id": "social-14362823",
       "name": "Hallo Teman #KebunRaya 👋🏼",
-      "startDate": "2026-05-30",
-      "endDate": "2026-06-29",
+      "startDate": "2026-05-31",
+      "endDate": "2026-06-30",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -161,10 +177,10 @@
       "image": "posters/DTC8tzjkk3-.jpg"
     },
     {
-      "id": "social-9146401036",
+      "id": "social-5742533755",
       "name": "Turnamen catur",
-      "startDate": "2026-05-30",
-      "endDate": "2026-06-29",
+      "startDate": "2026-05-31",
+      "endDate": "2026-06-30",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -180,10 +196,10 @@
       "image": "posters/DLRji5MOBvK.jpg"
     },
     {
-      "id": "social-2585755084",
+      "id": "social-8430253516",
       "name": "Turnamen catur",
-      "startDate": "2026-05-30",
-      "endDate": "2026-06-29",
+      "startDate": "2026-05-31",
+      "endDate": "2026-06-30",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -199,7 +215,7 @@
       "image": ""
     },
     {
-      "id": "social-4392800458",
+      "id": "social-3528255942",
       "name": "Wagub Banten Sambut Baik Kehadiran Sekolah Catur di Tangerang - MediaBanten.Com",
       "startDate": "2026-10-01",
       "endDate": "2026-10-28",
