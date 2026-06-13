@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-13T06:23:56.594786+07:00",
+  "lastUpdated": "2026-06-14T06:12:22.177085+07:00",
   "sources": [
     "chess-results.com",
     "pb-percasi.com",
@@ -9,10 +9,58 @@
   ],
   "tournaments": [
     {
-      "id": "social-3684152364",
+      "id": "tnr1422504",
+      "name": "OPEN TOURNAMENT CATUR KAPOLRES CUP SENIOR UMUM",
+      "startDate": "2026-06-14",
+      "endDate": "2026-06-14",
+      "city": "Jawa Barat",
+      "venue": "TBA",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Senior",
+      "isFIDE": false,
+      "organizer": "",
+      "sourceUrl": "https://chess-results.com/tnr1422504.aspx?lan=1",
+      "isJabodetabek": false,
+      "isBandung": false
+    },
+    {
+      "id": "tnr1422500",
+      "name": "OPEN TOURNAMENT CATUR KAPOLRES CUP  SD BAWAH PA/PI",
+      "startDate": "2026-06-14",
+      "endDate": "2026-06-14",
+      "city": "Jawa Barat",
+      "venue": "TBA",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "organizer": "",
+      "sourceUrl": "https://chess-results.com/tnr1422500.aspx?lan=1",
+      "isJabodetabek": false,
+      "isBandung": false
+    },
+    {
+      "id": "tnr1422503",
+      "name": "OPEN TOURNAMENT CATUR KAPOLRES CUP SMP/SMA PA/PI",
+      "startDate": "2026-06-14",
+      "endDate": "2026-06-14",
+      "city": "Jawa Barat",
+      "venue": "TBA",
+      "region": "Jawa Barat",
+      "type": "Rapid",
+      "category": "Open",
+      "isFIDE": false,
+      "organizer": "",
+      "sourceUrl": "https://chess-results.com/tnr1422503.aspx?lan=1",
+      "isJabodetabek": false,
+      "isBandung": false
+    },
+    {
+      "id": "social-1547820042",
       "name": "Turnamen catur di Tangerang Non-master #catur #caturindonesia #maincatur #lombacatur #infolomba",
-      "startDate": "2026-06-13",
-      "endDate": "2026-07-13",
+      "startDate": "2026-06-14",
+      "endDate": "2026-07-14",
       "city": "Tangerang",
       "venue": "TBA",
       "region": "Banten",
@@ -28,10 +76,10 @@
       "image": "posters/DUK1tDqE9EN.jpg"
     },
     {
-      "id": "social-8497393511",
+      "id": "social-1008205322",
       "name": "Turnamen catur",
-      "startDate": "2026-06-13",
-      "endDate": "2026-07-13",
+      "startDate": "2026-06-14",
+      "endDate": "2026-07-14",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -47,10 +95,10 @@
       "image": ""
     },
     {
-      "id": "social-5139966588",
+      "id": "social-6342801677",
       "name": "Info lomba catur di jakarta.",
-      "startDate": "2026-06-13",
-      "endDate": "2026-07-13",
+      "startDate": "2026-06-14",
+      "endDate": "2026-07-14",
       "city": "Jakarta",
       "venue": "TBA",
       "region": "DKI Jakarta",
@@ -66,10 +114,10 @@
       "image": "posters/DNFadUUx-XT.jpg"
     },
     {
-      "id": "social-7555681371",
+      "id": "social-4851973155",
       "name": "Turnamen catur",
-      "startDate": "2026-06-13",
-      "endDate": "2026-07-13",
+      "startDate": "2026-06-14",
+      "endDate": "2026-07-14",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -85,10 +133,10 @@
       "image": ""
     },
     {
-      "id": "social-944075635",
+      "id": "social-8426880830",
       "name": "Turnamen catur",
-      "startDate": "2026-06-13",
-      "endDate": "2026-07-13",
+      "startDate": "2026-06-14",
+      "endDate": "2026-07-14",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -104,10 +152,10 @@
       "image": ""
     },
     {
-      "id": "social-2796087299",
+      "id": "social-5962940359",
       "name": "Turnamen catur",
-      "startDate": "2026-06-13",
-      "endDate": "2026-07-13",
+      "startDate": "2026-06-14",
+      "endDate": "2026-07-14",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -123,10 +171,10 @@
       "image": "posters/DTuCdSwkgjR.jpg"
     },
     {
-      "id": "social-4941169242",
+      "id": "social-780359814",
       "name": "Turnamen catur",
-      "startDate": "2026-06-13",
-      "endDate": "2026-07-13",
+      "startDate": "2026-06-14",
+      "endDate": "2026-07-14",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -142,10 +190,10 @@
       "image": ""
     },
     {
-      "id": "social-8633590520",
+      "id": "social-5841877904",
       "name": "Hallo Teman #KebunRaya 👋🏼",
-      "startDate": "2026-06-13",
-      "endDate": "2026-07-13",
+      "startDate": "2026-06-14",
+      "endDate": "2026-07-14",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -161,10 +209,10 @@
       "image": "posters/DTC8tzjkk3-.jpg"
     },
     {
-      "id": "social-1264701235",
+      "id": "social-3729432100",
       "name": "Turnamen catur",
-      "startDate": "2026-06-13",
-      "endDate": "2026-07-13",
+      "startDate": "2026-06-14",
+      "endDate": "2026-07-14",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -180,10 +228,10 @@
       "image": "posters/DLRji5MOBvK.jpg"
     },
     {
-      "id": "social-4868245429",
+      "id": "social-9968070256",
       "name": "Turnamen catur",
-      "startDate": "2026-06-13",
-      "endDate": "2026-07-13",
+      "startDate": "2026-06-14",
+      "endDate": "2026-07-14",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -196,6 +244,25 @@
       "sourceUrl": "https://www.instagram.com/p/DUXqd6PESL1/",
       "unverified": true,
       "source": "instagram",
+      "image": ""
+    },
+    {
+      "id": "social-4367874484",
+      "name": "TOURNAMENT CATUR BOGOR OPEN CUP II 2026 RAPID CHESS ...",
+      "startDate": "2026-06-21",
+      "endDate": "2026-06-21",
+      "city": "Bogor",
+      "venue": "TBA",
+      "region": "Jawa Barat",
+      "type": "Blitz",
+      "category": "Open",
+      "isFIDE": false,
+      "isJabodetabek": true,
+      "isBandung": false,
+      "organizer": "www.instagram.com",
+      "sourceUrl": "https://www.instagram.com/p/DXZh2OBEdIq/",
+      "unverified": true,
+      "source": "turnamen catur jabodetabek 2026",
       "image": ""
     },
     {
