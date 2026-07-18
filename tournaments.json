@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-18T05:54:33.385504+07:00",
+  "lastUpdated": "2026-07-19T05:56:03.073119+07:00",
   "sources": [
     "chess-results.com",
     "pb-percasi.com",
@@ -9,58 +9,10 @@
   ],
   "tournaments": [
     {
-      "id": "tnr1453091",
-      "name": "PTDI RAPID CHESS OPEN TOURNAMENT 2026 ( JUNIOR SD 456 )",
-      "startDate": "2026-07-18",
-      "endDate": "2026-07-18",
-      "city": "Jawa Barat",
-      "venue": "PT. DIRGANTARA INDONESIA, JL. PAJAJARAN NO. 154 BANDUNG Number of rounds 7 Tournament type Swiss-Sys",
-      "region": "Jawa Barat",
-      "type": "Rapid",
-      "category": "Junior",
-      "isFIDE": false,
-      "organizer": "",
-      "sourceUrl": "https://chess-results.com/tnr1453091.aspx?lan=1",
-      "isJabodetabek": false,
-      "isBandung": false
-    },
-    {
-      "id": "tnr1453087",
-      "name": "PTDI RAPID CHESS OPEN TOURNAMENT 2026 ( VETERAN )",
-      "startDate": "2026-07-18",
-      "endDate": "2026-07-18",
-      "city": "Jawa Barat",
-      "venue": "PT. DIRGANTARA INDONESIA, JL. PAJAJARAN NO. 154 BANDUNG Number of rounds 7 Tournament type Swiss-Sys",
-      "region": "Jawa Barat",
-      "type": "Rapid",
-      "category": "Senior",
-      "isFIDE": false,
-      "organizer": "",
-      "sourceUrl": "https://chess-results.com/tnr1453087.aspx?lan=1",
-      "isJabodetabek": false,
-      "isBandung": false
-    },
-    {
-      "id": "tnr1453083",
-      "name": "PTDI RAPID CHESS OPEN TOURNAMENT 2026 ( NON MASTER )",
-      "startDate": "2026-07-18",
-      "endDate": "2026-07-18",
-      "city": "Jawa Barat",
-      "venue": "PT. DIRGANTARA INDONESIA, JL. PAJAJARAN NO. 154 BANDUNG Number of rounds 7 Tournament type Swiss-Sys",
-      "region": "Jawa Barat",
-      "type": "Rapid",
-      "category": "Master",
-      "isFIDE": false,
-      "organizer": "",
-      "sourceUrl": "https://chess-results.com/tnr1453083.aspx?lan=1",
-      "isJabodetabek": false,
-      "isBandung": false
-    },
-    {
       "id": "tnr1450636",
       "name": "PTDI RAPID CHESS OPEN TOURNAMENT 2026 ( MASTER )",
-      "startDate": "2026-07-18",
-      "endDate": "2026-07-18",
+      "startDate": "2026-07-19",
+      "endDate": "2026-07-19",
       "city": "Jawa Barat",
       "venue": "PT. DIRGANTARA INDONESIA, JL. PAJAJARAN NO. 154 BANDUNG Number of rounds 7 Tournament type Swiss-Sys",
       "region": "Jawa Barat",
@@ -73,10 +25,10 @@
       "isBandung": false
     },
     {
-      "id": "social-2275554909",
+      "id": "social-390123467",
       "name": "Turnamen catur di Tangerang Non-master #catur #caturindonesia #maincatur #lombacatur #infolomba",
-      "startDate": "2026-07-18",
-      "endDate": "2026-08-17",
+      "startDate": "2026-07-19",
+      "endDate": "2026-08-18",
       "city": "Tangerang",
       "venue": "TBA",
       "region": "Banten",
@@ -92,10 +44,10 @@
       "image": "posters/DUK1tDqE9EN.jpg"
     },
     {
-      "id": "social-4051889540",
+      "id": "social-5663621413",
       "name": "Turnamen catur",
-      "startDate": "2026-07-18",
-      "endDate": "2026-08-17",
+      "startDate": "2026-07-19",
+      "endDate": "2026-08-18",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -111,10 +63,10 @@
       "image": ""
     },
     {
-      "id": "social-6469837708",
+      "id": "social-6056197218",
       "name": "Info lomba catur di jakarta.",
-      "startDate": "2026-07-18",
-      "endDate": "2026-08-17",
+      "startDate": "2026-07-19",
+      "endDate": "2026-08-18",
       "city": "Jakarta",
       "venue": "TBA",
       "region": "DKI Jakarta",
@@ -130,10 +82,10 @@
       "image": "posters/DNFadUUx-XT.jpg"
     },
     {
-      "id": "social-3594369014",
+      "id": "social-385104184",
       "name": "Like dan Follow bila kamu suka catur.👍",
-      "startDate": "2026-07-18",
-      "endDate": "2026-08-17",
+      "startDate": "2026-07-19",
+      "endDate": "2026-08-18",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -149,10 +101,10 @@
       "image": "posters/DXyEoNBgU-X.jpg"
     },
     {
-      "id": "social-6171404805",
+      "id": "social-8403801399",
       "name": "Turnamen catur",
-      "startDate": "2026-07-18",
-      "endDate": "2026-08-17",
+      "startDate": "2026-07-19",
+      "endDate": "2026-08-18",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -168,10 +120,10 @@
       "image": ""
     },
     {
-      "id": "social-7954599317",
+      "id": "social-2192063181",
       "name": "Kejuaraan Catur Cepat Pelajar Piala Wali Kota Jakarta Timur sukses digelar di Mall @bassura dengan antusias luar biasa dari 320 peserta!",
-      "startDate": "2026-07-18",
-      "endDate": "2026-08-17",
+      "startDate": "2026-07-19",
+      "endDate": "2026-08-18",
       "city": "Jakarta",
       "venue": "TBA",
       "region": "DKI Jakarta",
@@ -187,10 +139,10 @@
       "image": "posters/DTuCdSwkgjR.jpg"
     },
     {
-      "id": "social-8467164236",
+      "id": "social-7543935985",
       "name": "Turnamen catur",
-      "startDate": "2026-07-18",
-      "endDate": "2026-08-17",
+      "startDate": "2026-07-19",
+      "endDate": "2026-08-18",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -206,10 +158,10 @@
       "image": ""
     },
     {
-      "id": "social-231851636",
+      "id": "social-2309734692",
       "name": "Hallo Teman #KebunRaya 👋🏼",
-      "startDate": "2026-07-18",
-      "endDate": "2026-08-17",
+      "startDate": "2026-07-19",
+      "endDate": "2026-08-18",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -225,10 +177,10 @@
       "image": "posters/DTC8tzjkk3-.jpg"
     },
     {
-      "id": "social-4324669845",
+      "id": "social-1751615603",
       "name": "PERLOMBAAN CATUR “KAPOLRES METRO BEKASI KOTA CUP” MERIAHKAN HUT BHAYANGKARA KE-79 DI KECAMATAN MUSTIKA JAYA",
-      "startDate": "2026-07-18",
-      "endDate": "2026-08-17",
+      "startDate": "2026-07-19",
+      "endDate": "2026-08-18",
       "city": "Bekasi",
       "venue": "TBA",
       "region": "Jawa Barat",
@@ -244,10 +196,10 @@
       "image": "posters/DLRji5MOBvK.jpg"
     },
     {
-      "id": "social-9635533737",
+      "id": "social-5833799410",
       "name": "Turnamen catur",
-      "startDate": "2026-07-18",
-      "endDate": "2026-08-17",
+      "startDate": "2026-07-19",
+      "endDate": "2026-08-18",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
