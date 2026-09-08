@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-09-07T06:40:51.715526+07:00",
+  "lastUpdated": "2026-09-08T07:06:48.586732+07:00",
   "sources": [
     "chess-results.com",
     "pb-percasi.com",
@@ -9,26 +9,10 @@
   ],
   "tournaments": [
     {
-      "id": "tnr1489990",
-      "name": "TURNAMEN CATUR BEBEK & AYAM GENTONG ASAP DATIEN (PAPAP CHESS KE-3)",
-      "startDate": "2026-09-07",
-      "endDate": "2026-09-07",
-      "city": "Jawa Barat",
-      "venue": "TBA",
-      "region": "Jawa Barat",
-      "type": "Rapid",
-      "category": "Open",
-      "isFIDE": false,
-      "organizer": "",
-      "sourceUrl": "https://chess-results.com/tnr1489990.aspx?lan=1",
-      "isJabodetabek": false,
-      "isBandung": false
-    },
-    {
-      "id": "social-5279256902",
+      "id": "social-1949151205",
       "name": "Turnamen catur di Tangerang Non-master #catur #caturindonesia #maincatur #lombacatur #infolomba",
-      "startDate": "2026-09-07",
-      "endDate": "2026-10-07",
+      "startDate": "2026-09-08",
+      "endDate": "2026-10-08",
       "city": "Tangerang",
       "venue": "TBA",
       "region": "Banten",
@@ -44,10 +28,10 @@
       "image": "posters/DUK1tDqE9EN.jpg"
     },
     {
-      "id": "social-1328836784",
+      "id": "social-7699644759",
       "name": "Turnamen catur",
-      "startDate": "2026-09-07",
-      "endDate": "2026-10-07",
+      "startDate": "2026-09-08",
+      "endDate": "2026-10-08",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -63,10 +47,10 @@
       "image": ""
     },
     {
-      "id": "social-4250564728",
+      "id": "social-2026890630",
       "name": "Info lomba catur di jakarta.",
-      "startDate": "2026-09-07",
-      "endDate": "2026-10-07",
+      "startDate": "2026-09-08",
+      "endDate": "2026-10-08",
       "city": "Jakarta",
       "venue": "TBA",
       "region": "DKI Jakarta",
@@ -82,10 +66,10 @@
       "image": "posters/DNFadUUx-XT.jpg"
     },
     {
-      "id": "social-5013848505",
+      "id": "social-3398577135",
       "name": "Like dan Follow bila kamu suka catur.👍",
-      "startDate": "2026-09-07",
-      "endDate": "2026-10-07",
+      "startDate": "2026-09-08",
+      "endDate": "2026-10-08",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -101,10 +85,10 @@
       "image": "posters/DXyEoNBgU-X.jpg"
     },
     {
-      "id": "social-6920596272",
+      "id": "social-1779420549",
       "name": "Turnamen catur",
-      "startDate": "2026-09-07",
-      "endDate": "2026-10-07",
+      "startDate": "2026-09-08",
+      "endDate": "2026-10-08",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -120,10 +104,10 @@
       "image": ""
     },
     {
-      "id": "social-3655751759",
+      "id": "social-5010359894",
       "name": "Kejuaraan Catur Cepat Pelajar Piala Wali Kota Jakarta Timur sukses digelar di Mall @bassura dengan antusias luar biasa dari 320 peserta!",
-      "startDate": "2026-09-07",
-      "endDate": "2026-10-07",
+      "startDate": "2026-09-08",
+      "endDate": "2026-10-08",
       "city": "Jakarta",
       "venue": "TBA",
       "region": "DKI Jakarta",
@@ -139,10 +123,10 @@
       "image": "posters/DTuCdSwkgjR.jpg"
     },
     {
-      "id": "social-9479254412",
+      "id": "social-3570730641",
       "name": "Turnamen catur",
-      "startDate": "2026-09-07",
-      "endDate": "2026-10-07",
+      "startDate": "2026-09-08",
+      "endDate": "2026-10-08",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -158,10 +142,10 @@
       "image": ""
     },
     {
-      "id": "social-1178728437",
+      "id": "social-1495488017",
       "name": "Hallo Teman #KebunRaya 👋🏼",
-      "startDate": "2026-09-07",
-      "endDate": "2026-10-07",
+      "startDate": "2026-09-08",
+      "endDate": "2026-10-08",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -177,10 +161,10 @@
       "image": "posters/DTC8tzjkk3-.jpg"
     },
     {
-      "id": "social-42840941",
+      "id": "social-7813186207",
       "name": "PERLOMBAAN CATUR “KAPOLRES METRO BEKASI KOTA CUP” MERIAHKAN HUT BHAYANGKARA KE-79 DI KECAMATAN MUSTIKA JAYA",
-      "startDate": "2026-09-07",
-      "endDate": "2026-10-07",
+      "startDate": "2026-09-08",
+      "endDate": "2026-10-08",
       "city": "Bekasi",
       "venue": "TBA",
       "region": "Jawa Barat",
@@ -196,10 +180,10 @@
       "image": "posters/DLRji5MOBvK.jpg"
     },
     {
-      "id": "social-5700795414",
+      "id": "social-9366888865",
       "name": "Turnamen catur",
-      "startDate": "2026-09-07",
-      "endDate": "2026-10-07",
+      "startDate": "2026-09-08",
+      "endDate": "2026-10-08",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
