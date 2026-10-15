@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-14T08:01:54.395254+07:00",
+  "lastUpdated": "2026-10-15T07:22:33.924127+07:00",
   "sources": [
     "chess-results.com",
     "pb-percasi.com",
@@ -9,26 +9,26 @@
   ],
   "tournaments": [
     {
-      "id": "tnr1491703",
-      "name": "SUPER CHALLENGE SUPER CHESS  NATIONAL TOURNAMENT 4 - 2026 (OPEN)",
-      "startDate": "2026-10-14",
-      "endDate": "2026-10-14",
+      "id": "tnr1517229",
+      "name": "ABHYPRAYA CHESS TINGKAT SD / MI KE ATAS",
+      "startDate": "2026-10-15",
+      "endDate": "2026-10-15",
       "city": "Jawa Barat",
-      "venue": "JL. PELAJAR PEJUANG 45 NO. 119 ( PISET SQUARE LT. 1 ) KOTA BANDUNG Number of rounds 7 Tournament typ",
+      "venue": "TBA",
       "region": "Jawa Barat",
       "type": "Rapid",
       "category": "Open",
       "isFIDE": false,
       "organizer": "",
-      "sourceUrl": "https://chess-results.com/tnr1491703.aspx?lan=1",
+      "sourceUrl": "https://chess-results.com/tnr1517229.aspx?lan=1",
       "isJabodetabek": false,
       "isBandung": false
     },
     {
-      "id": "social-5851819802",
+      "id": "social-8290443733",
       "name": "Turnamen catur di Tangerang Non-master #catur #caturindonesia #maincatur #lombacatur #infolomba",
-      "startDate": "2026-10-14",
-      "endDate": "2026-11-13",
+      "startDate": "2026-10-15",
+      "endDate": "2026-11-14",
       "city": "Tangerang",
       "venue": "TBA",
       "region": "Banten",
@@ -44,10 +44,10 @@
       "image": "posters/DUK1tDqE9EN.jpg"
     },
     {
-      "id": "social-5131603794",
+      "id": "social-2338900546",
       "name": "Turnamen catur",
-      "startDate": "2026-10-14",
-      "endDate": "2026-11-13",
+      "startDate": "2026-10-15",
+      "endDate": "2026-11-14",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -63,10 +63,10 @@
       "image": ""
     },
     {
-      "id": "social-4117477832",
+      "id": "social-5471798418",
       "name": "Info lomba catur di jakarta.",
-      "startDate": "2026-10-14",
-      "endDate": "2026-11-13",
+      "startDate": "2026-10-15",
+      "endDate": "2026-11-14",
       "city": "Jakarta",
       "venue": "TBA",
       "region": "DKI Jakarta",
@@ -82,10 +82,10 @@
       "image": "posters/DNFadUUx-XT.jpg"
     },
     {
-      "id": "social-1693306361",
+      "id": "social-5492772530",
       "name": "Like dan Follow bila kamu suka catur.👍",
-      "startDate": "2026-10-14",
-      "endDate": "2026-11-13",
+      "startDate": "2026-10-15",
+      "endDate": "2026-11-14",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -101,10 +101,10 @@
       "image": "posters/DXyEoNBgU-X.jpg"
     },
     {
-      "id": "social-1133921670",
+      "id": "social-6793573502",
       "name": "Turnamen catur",
-      "startDate": "2026-10-14",
-      "endDate": "2026-11-13",
+      "startDate": "2026-10-15",
+      "endDate": "2026-11-14",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -120,10 +120,10 @@
       "image": ""
     },
     {
-      "id": "social-4514459054",
+      "id": "social-6993494828",
       "name": "Kejuaraan Catur Cepat Pelajar Piala Wali Kota Jakarta Timur sukses digelar di Mall @bassura dengan antusias luar biasa dari 320 peserta!",
-      "startDate": "2026-10-14",
-      "endDate": "2026-11-13",
+      "startDate": "2026-10-15",
+      "endDate": "2026-11-14",
       "city": "Jakarta",
       "venue": "TBA",
       "region": "DKI Jakarta",
@@ -139,10 +139,10 @@
       "image": "posters/DTuCdSwkgjR.jpg"
     },
     {
-      "id": "social-126048186",
+      "id": "social-6890563712",
       "name": "Turnamen catur",
-      "startDate": "2026-10-14",
-      "endDate": "2026-11-13",
+      "startDate": "2026-10-15",
+      "endDate": "2026-11-14",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -158,10 +158,10 @@
       "image": ""
     },
     {
-      "id": "social-6738829272",
+      "id": "social-5677806046",
       "name": "Hallo Teman #KebunRaya 👋🏼",
-      "startDate": "2026-10-14",
-      "endDate": "2026-11-13",
+      "startDate": "2026-10-15",
+      "endDate": "2026-11-14",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
@@ -177,10 +177,10 @@
       "image": "posters/DTC8tzjkk3-.jpg"
     },
     {
-      "id": "social-8664290030",
+      "id": "social-6181923643",
       "name": "PERLOMBAAN CATUR “KAPOLRES METRO BEKASI KOTA CUP” MERIAHKAN HUT BHAYANGKARA KE-79 DI KECAMATAN MUSTIKA JAYA",
-      "startDate": "2026-10-14",
-      "endDate": "2026-11-13",
+      "startDate": "2026-10-15",
+      "endDate": "2026-11-14",
       "city": "Bekasi",
       "venue": "TBA",
       "region": "Jawa Barat",
@@ -196,10 +196,10 @@
       "image": "posters/DLRji5MOBvK.jpg"
     },
     {
-      "id": "social-9218135580",
+      "id": "social-9826157488",
       "name": "Turnamen catur",
-      "startDate": "2026-10-14",
-      "endDate": "2026-11-13",
+      "startDate": "2026-10-15",
+      "endDate": "2026-11-14",
       "city": "TBA",
       "venue": "TBA",
       "region": "Indonesia",
